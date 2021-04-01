@@ -30,9 +30,6 @@ global dxHall dyHall ht GV amplecinta
 mostra{1}='PowerOx_5cm_2021_3_31_16_52_';
 
 
-
-
-
 % % descomentar si es volen processar varies mostres alhora
 % mostra{2}='Amp3_135A_2011_5_24_11_53';
 % mostra{3}='Amp3_135Aavall_2011_5_24_15_42';
