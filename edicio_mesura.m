@@ -27,7 +27,7 @@ global dxHall dyHall ht GV amplecinta
 % Nom de la mesura a estudiar (poden ser varis si s'han fet amb els mateixos parametres)
 
 
-mostra{1}='Theva_plate_2_soldering_2021_3_4_14_32_';
+mostra{1}='PowerOx_5cm_2021_3_31_16_52_';
 
 
 
