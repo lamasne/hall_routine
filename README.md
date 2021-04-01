@@ -1,6 +1,8 @@
 # hall_routine
 Data processing post hall measurements
 
+Versions: Matlab2021 - Python3.7
+
 Note: How to call matlab from Python:
 1) from administrador cmd line:
 cd C: "_matlabroot_\extern\engines\python"
