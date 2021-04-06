@@ -15,8 +15,7 @@ function A=col2matlab(fitxer)
 % 2011/2/9
 % Provat i funciona.
 
-
-entrada=fopen(fitxer,'r');
+entrada=fopen(fitxer,'r')
 
 linea=fgetl(entrada);
 

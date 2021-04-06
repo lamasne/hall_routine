@@ -1,4 +1,4 @@
-function Hall2B(mostra,allisatX,allisatY,freqX,freqY,margelat)
+function Hall2B(allisatX, allisatY ,freqX, freqY, margelat)
     % Conversio de uV a Tesla: 
     % es llegeixen els fitxers .csv de la llista mostra,
     % es fa la recta de regressio de les 100 primeres
@@ -32,18 +32,20 @@ function Hall2B(mostra,allisatX,allisatY,freqX,freqY,margelat)
     %
     % provat i funciona
 
-    global dxHall dyHall ht GV amplecinta
+    global dxHall dyHall ht GV amplecinta inputPath outputPath
 
     % % fraccio de l'ample de la cinta per cada costat en el que es pren tambe la
     % % mesura de B per fer el calcul
     % margelatB=1/4; 
 
+    mostra = sampleN
+
     nm=length(mostra); 
 
     for k=1:nm,
-        fitxer=[mostra{k} '.csv'];
+        fitxer=[inputPath '\' mostra{k} '.csv'];
         A=col2matlab(fitxer);
-        desti=[mostra{k} '.mat'];
+        desti=[outputPath '\' mostra{k} '.mat'];
         files=size(A,1);
         cols=size(A,2);
         colsB=cols-allisatY+1;
@@ -55,13 +57,13 @@ function Hall2B(mostra,allisatX,allisatY,freqX,freqY,margelat)
         xlabel('mesura');
         ylabel('V');
         title('Tall transvers de mesura sonda a mitja cinta');
-        print('-dpng',['tall_transvers_central_uV_' mostra{k} '.png']);
+        print('-dpng',[outputPath '\tall_transvers_central_uV_' mostra{k} '.png']);
         figure(2)
         plot(A(:,round(cols/2)),'r');
         xlabel('fila');
         ylabel('V');
         title('Tall longitudinal de mesura sonda a mitja cinta');
-        print('-dpng',['tall_longitudinal_central_uV_' mostra{k} '.png']);
+        print('-dpng',[outputPath '\tall_longitudinal_central_uV_' mostra{k} '.png']);
 
 
 
@@ -101,13 +103,13 @@ function Hall2B(mostra,allisatX,allisatY,freqX,freqY,margelat)
         xlabel('y(m)');
         ylabel('B_z(T)');
         title('Tall transvers de B_z a mitja cinta');
-        print('-dpng',['tall_transvers_central_Bz_' mostra{k} '.png']);
+        print('-dpng',[outputPath '\tall_transvers_central_Bz_' mostra{k} '.png']);
         figure(4)
         plot(linspace(0,(size(Btot,1)-1)*dx,size(Btot,1)),Btot(:,round(size(Btot,2)/2)));
         xlabel('x(m)');
         ylabel('B_z(T)');
         title('Tall longitudinal de B_z a mitja cinta');
-        print('-dpng',['tall_longitudinal_central_Bz_' mostra{k} '.png']);
+        print('-dpng',[outputPath '\tall_longitudinal_central_Bz_' mostra{k} '.png']);
         clear A BllisY BllisYX Btot
 end;
 

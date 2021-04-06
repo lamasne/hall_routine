@@ -1,4 +1,4 @@
- % DO THIS BY HAND AFTER SEEING M2 IN THE SCREEN
+     % DO THIS BY HAND AFTER SEEING M2 IN THE SCREEN
 % Simply eliminate the first and last rows and columns of M2 (the edges) 
 % to get rid of the edge area where spurious M has been found
 % retall de M2: 

@@ -1,4 +1,4 @@
-function edicio_mesura(sampleName)
+function edicio_mesura(sampleName_in, inputPath_in, outputPath_in, dxHall_in, dyHall_in, ht_in, GV_in, amplecinta_in, m_in, n_in)
     % CALCUL DE CORRENT CRITIC EN CINTES DE MATERIAL SUPERCONDUCTOR
     % A PARTIR DE MESURES DE CAMP MAGNETIC AMB SONDA HALL
     % PER LINEALITZACIO I INVERSIO DEL PROBLEMA DE BIOT-SAVART
@@ -16,19 +16,24 @@ function edicio_mesura(sampleName)
     % 2016/4/6
     % en desenvolupament
 
-    close all
-    clc
-    clear 
+    global sampleName dxHall dyHall ht GV amplecinta inputPath outputPath m n
 
-    global dxHall dyHall ht GV amplecinta
+    % Parametres de la mesura (TOTES LES MESURES SI)
+    sampleName = sampleName_in;
 
-    % PART QUE TOCA L'USUARI
+    dxHall = dxHall_in;
+    dyHall = dyHall_in;
+    ht = ht_in;
+    GV = GV_in;
+    amplecinta = amplecinta_in;
 
-    % PARAMETRES DE LA MESURA I DEL CALCUL (CAL OMPLIR A MA)
+    inputPath = inputPath_in;
+    outputPath = outputPath_in;
+
+    m = m_in;
+    n = n_in;
 
     % Nom de la mesura a estudiar (poden ser varis si s'han fet amb els mateixos parametres)
-
-
     mostra{1}=sampleName;
 
 
@@ -40,13 +45,8 @@ function edicio_mesura(sampleName)
     % mostra{6}='Amp3_50A_2011_5_24_10_53';
     % mostra{7}='Amp3_50Aavall_2011_5_24_17_35';
 
-    % Parametres de la mesura (TOTES LES MESURES SI)
-    dxHall = 2e-4; % pas en X (entre files) de la sonda
-    dyHall = 5e-6; % pas en Y (dins de cada fila) de la sonda
-    ht = 0.3e-3; % alc,ada de mesura
-    GV = 97; % factor de conversio: Gauss per Volt % 14.23 For Roxana  % 70.93 for Pedro
-    amplecinta = 24e-3; % ample aproximat de la cinta, pot tenir marge d'error de l'ordre del 10-20%
 
+    
     %-------------------------------------------------------
 
     % GV Calibra�ao de 20 de junho de 2019:
@@ -88,7 +88,7 @@ function edicio_mesura(sampleName)
     % LECTURA DE LES DADES, CONVERSIO A TESLA I EMMAGATZEMAT PROVISIONAL EN
     % FORMAT MATLAB
 
-    Hall2B(mostra,allisatX,allisatY,freqX,freqY,margelat);
+    Hall2B(mostra, allisatX, allisatY,freqX,freqY,margelat);
 
     % tambe es generen figures de talls de la mesura de la sonda, 
     % i del camp B_z convolucionat, 
