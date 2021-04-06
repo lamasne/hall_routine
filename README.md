@@ -1,9 +1,11 @@
 # hall_routine
 Data processing post hall measurements
 
-Versions: Matlab2021 - Python3.7
+Versions: Matlab2015a - Python3.4 - VSCode (Python version not supported in PyCharm)
+Note: could be updated to Matlab2021 - Python3.7 - Pycharm 
 
-Note: How to call matlab from Python:
+
+How to call matlab from Python:
 1) from administrador cmd line:
 cd C: "_matlabroot_\extern\engines\python"
 C:\Users\Lamas\AppData\Local\Programs\Python\Python37\python.exe setup.py install
