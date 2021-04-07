@@ -9,7 +9,7 @@
 
 function fourier()
 
-    global sampleName outputPath m n dyHall
+    global sampleName outputPath m n dxHall dyHall ht
 
 
     temps0=clock;
@@ -24,10 +24,10 @@ function fourier()
     % malla de mesura de Bz te m files x n columnes
 
     % eix OX dona direccio de cada fila (o -col?), eix OY direccio de cada columna (o fila?). Passos en cada eix
-    dx=dxHall; % separation of measurements in every row
-    dy=dyHall; % 10e-4 separation between rows
+    'ERROR: dx and dy have been reversed to make it work (in fourier.m)!'
+    dx=dyHall; % separation of measurements in every row
+    dy=dxHall; % 10e-4 separation between rows
     % alc,ada sobre la mostra a la que la sonda mesura Bz
-    ht=2.3e-4; % height=distance from Hall probe to top of sample
     % gruix de la mostra
     gruix = 1.35e-6; % thickness of the sample
     % factor de calibracio V/T en la mesura
@@ -67,6 +67,8 @@ function fourier()
 
     % calcul invers via transformades de Fourier discretes
     Bext=zeros(2*m,2*n);
+    size(Bext(m+1:2*m,n+1:2*n))
+    size(B2)
     Bext(m+1:2*m,n+1:2*n)=B2;
 
     tB=fft2(Bext); 

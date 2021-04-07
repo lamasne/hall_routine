@@ -1,128 +1,21 @@
-  % calcul de Biot-Savart invers en mesura stacknouL30_2polsnou_gap600_2016_5_4_10_25_
-% pel metode de Fourier, amb filtratge SSA de la mesura de B
-%
-% Jaume Amoros, Arnau Duran UPC, Barcelona
-% Miquel Carrera, UdL, Lleida
-% ...
-%
-% 20170614
-
-function fourier(sampleName, output_path, m, n, dy)
-
-    temps0=clock;
-
-    % your file with filtered data on variable Vcru_copia
-    nom = strcat(output_path, '\', sampleName, '_filtered');
+     % DO THIS BY HAND AFTER SEEING M2 IN THE SCREEN
+% Simply eliminate the first and last rows and columns of M2 (the edges) 
+% to get rid of the edge area where spurious M has been found
+% retall de M2: 
+% ES FA A MA !!
+% Es mira el grafic original de M2 i es decideix a ull quines files i
+% columnes de la vora s'exclouen. 
+% Ens quedarem amb la finestra (m0:mf,n0:nf) de M2
 
 
-    load(nom);
-
-    % USER FILLS THIS DATA
-    % malla de mesura de Bz te m files x n columnes
-    m=300; % 400 number of measurements in every row (columns)
-    n=226; % 35 number of rows
-    % eix OX dona direccio de cada fila (o -col?), eix OY direccio de cada columna (o fila?). Passos en cada eix
-    dx=20*5e-6; % separation of measurements in every row
-    dy=2e-4; % 10e-4 separation between rows
-    % alc,ada sobre la mostra a la que la sonda mesura Bz
-    ht=2.3e-4; % height=distance from Hall probe to top of sample
-    % gruix de la mostra
-    gruix = 1.35e-6; % thickness of the sample
-    % factor de calibracio V/T en la mesura
-    calibracio=1;  % 75.2; conversion factor from Volts to Tesla
-    % END OF SPECIFIC DATA FOR EACH MEASUREMENT
-
-    % THE SEQUEL IS THE INVERSION, INDEPENDENT OF THE SAMPLE 
-    % la malla de discretitzacio aqui es exactament la mateixa que la de mesura
-    % de Bz
-
-    % segueixen els calculs d'ofici
-    % la B mesurada
-    B2=(Vcru_copia.')/calibracio;
+function fourier_part()
 
 
-    % Llista de punts de mesura de Bz, i simetrics, amb (0,0,ht)=mesura inicial
-    x=linspace(1-m,m-1,2*m-1)*dx;
-    y=linspace(1-n,n-1,2*n-1)*dy;
-    [x2,y2]=ndgrid(x,y);
-    xb=x2(:);
-    yb=y2(:);
-    zb=ht*ones(size(xb));
-
-    % element central, per a calcular la G de Fourier
-    x0=-dx/2;
-    xf=dx/2;
-    y0=-dy/2;
-    yf=dy/2;
-    z0=-gruix;
-    zf=0;
-
-    % calcul de la G requerida pel metode de Fourier
-    G1=calculG2(x0,xf,y0,yf,z0,zf,xb,yb,zb);
-    G=zeros(2*m,2*n);
-    G(2:end,2:end)=reshape(G1,2*m-1,2*n-1);
-    tG=fft2(G);
-
-    % calcul invers via transformades de Fourier discretes
-    Bext=zeros(2*m,2*n);
-    Bext(m+1:2*m,n+1:2*n)=B2;
-
-    tB=fft2(Bext); 
-    tM=tB./tG;
-
-    Mext=real(ifft2(tM));
-    M2=Mext(1:m,1:n);
-    temps1=clock;
-
-    % Estudi estadistic de la propagacio de l'error relatiu
-    % creacio de mostra de perturbacions aleatories normalitzades per B2
-    % (s'ha de canviar! per a que els punts estiguin equidistribuits en
-    % l'esfera)
-    npert=1000;
-    DeltaB=rand(size(B2,1),size(B2,2),npert);
-    DeltaB2=DeltaB.*DeltaB;
-    normesDeltaB=sqrt(squeeze(sum(sum(DeltaB2,2))));
-    for k=1:npert,
-        DeltaB(:,:,k)=DeltaB(:,:,k)/normesDeltaB(k);
-    end;
-    % inversio per cada perturbacio
-    for k=1:npert,
-        DBext=zeros(2*m,2*n);
-        DBext(m+1:2*m,n+1:2*n)=DeltaB(:,:,k);
-
-        tDB=fft2(DBext);
-        tDM=tDB./tG;
-
-        DMext=real(ifft2(tDM));
-        DM2=DMext(1:m,1:n);
-        DeltaM(:,:,k)=DM2;
-    end;
-    DeltaM2=DeltaM.*DeltaM;
-    normesDeltaM=sqrt(squeeze(sum(sum(DeltaM2,2))));
-    llista_c=normesDeltaM*sqrt(sum(sum(B2.*B2)))/sqrt(sum(sum(M2.*M2)));
-    'test de Kolmogorov-Smirnov: 1=normalitat'
-    kstest(llista_c) 
-    % mitja i desviacio standard dels valors de c
-    cbarra=mean(llista_c);
-    sigmac=std(llista_c);
-
-    temps2=clock;
-    mesh(M2);
-    % END OF STATIC CODE THAT IS NOT EDITED
-
-    %{
-    % DO THIS BY HAND AFTER SEEING M2 IN THE SCREEN
-    % Simply eliminate the first and last rows and columns of M2 (the edges) 
-    % to get rid of the edge area where spurious M has been found
-    % retall de M2: 
-    % ES FA A MA !!
-    % Es mira el grafic original de M2 i es decideix a ull quines files i
-    % columnes de la vora s'exclouen. 
-    % Ens quedarem amb la finestra (m0:mf,n0:nf) de M2
     m0=20; % rows
-    mf=65;
+    mf=140;
     n0=20; % columns 
-    nf=230;
+    nf=200;
+
     % WHAT FOLLOWS IS AUTOMATIC
     M2=M2(m0:mf,n0:nf);
     m=mf-m0+1;
@@ -153,8 +46,6 @@ function fourier(sampleName, output_path, m, n, dy)
     xb=xb2(:);
     yb=yb2(:);
     zb=ht*ones(size(xb));
-
-
 
     % calcul de J per diferencies centrades (4 punts) com a J=rot(M)
     diffMy=diff(M2.').';
@@ -236,43 +127,58 @@ function fourier(sampleName, output_path, m, n, dy)
     % dibuixa figures
     figure(1)
     % figure('Visible','off')
-    mesh(xb2,yb2,B2);
-    xlabel('x');
-    ylabel('y');
-    zlabel('B_z');
+    mesh(xb2*1e3,yb2*1e3,B2);
+    xlabel('x [mm]','FontSize', 20);
+    ylabel('y [mm]','FontSize', 20);
+    set(gca,'fontsize',14); set(gcf,'Color','white');
+    zlabel('B_z [T]','FontSize', 20);
     fitxerfig=['Bz_' nom '.png'];
+    textfig=['Bz_' nom '.fig'];
     print('-dpng',fitxerfig);
+    saveas(gcf,textfig);
 
     figure(2)
-    mesh(xm2,ym2,M2);
-    xlabel('x');
-    ylabel('y');
-    zlabel('M');
+    mesh(xm2*1e3,ym2*1e3,M2);
+    xlabel('x [mm]','FontSize', 20);
+    ylabel('y [mm]','FontSize', 20);
+    set(gca,'fontsize',14); set(gcf,'Color','white');
+    zlabel('M [A/m]');
     fitxerfig=['M_' nom '.png'];
+    textfig=['M_' nom '.fig'];
     print('-dpng',fitxerfig);
+    saveas(gcf,textfig);
 
     figure(3)
-    mesh(xj2,yj2,Jv2);
-    xlabel('x');
-    ylabel('y');
-    zlabel('J_v');
+    mesh(xj2*1e3,yj2*1e3,Jv2);
+    xlabel('x [mm]','FontSize', 20);
+    ylabel('y [mm]','FontSize', 20);
+    set(gca,'fontsize',14); set(gcf,'Color','white');
+    zlabel('J_v [A/m^2]');
     fitxerfig=['Jv_' nom '.png'];
+    textfig=['Jv_' nom '.fig'];
     print('-dpng',fitxerfig);
+    saveas(gcf,textfig);
 
     figure(4)
-    C=contour(xj2,yj2,Jv2);
+    C=contour(xj2*1e3,yj2*1e3,Jv2);
     clabel(C);
-    xlabel('x');
-    ylabel('y');
+    xlabel('x [mm]','FontSize', 20);
+    ylabel('y [mm]','FontSize', 20);
+    set(gca,'fontsize',14); set(gcf,'Color','white');
     fitxerfig=['contorndensitatJ_' nom '.png'];
+    textfig=['contorndensitatJ_' nom '.fig'];
     print('-dpng',fitxerfig);
+    saveas(gcf,textfig);
 
     figure(5)
-    quiver(xj2,yj2,Jx2,Jy2);
-    xlabel('x');
-    ylabel('y');
-    fitxerfig=['mapacorrent_' nom '.png'];
+    quiver(xj2*1e3,yj2*1e3,Jx2,Jy2);
+    xlabel('x [mm]','FontSize', 20);
+    ylabel('y [mm]','FontSize', 20);
+    set(gca,'fontsize',14); set(gcf,'Color','white');
+    fitxerfig=['curl(M)_' nom '.png'];
+    textfig=['curl(M)_' nom '.fig'];
     print('-dpng',fitxerfig);
+    saveas(gcf,textfig);
 
     figure(6)
     plot(xb2(:,floor(size(B2,2)/2)),B2(:,floor(size(B2,2)/2)));
@@ -280,7 +186,9 @@ function fourier(sampleName, output_path, m, n, dy)
     plot(xb2(:,floor(size(B2,2)/2)),Bd2(:,floor(size(B2,2)/2)),'r');
     hold off
     fitxerfig=['tall_filamig_B_Bd_' nom '.png'];
+    textfig=['tall_filamig_B_Bd_' nom '.fig'];
     print('-dpng',fitxerfig);
+    saveas(gcf,textfig);
 
     % empaqueta les figures i les esborra (nomes funciona en Linux?)
     empaqueta=['zip figures_' nom '.zip *.png'];
@@ -296,5 +204,6 @@ function fourier(sampleName, output_path, m, n, dy)
     'Temps recalcul de Bz'
     temps3-temps2
     %}
+
 
 end

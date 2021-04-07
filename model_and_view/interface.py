@@ -75,7 +75,7 @@ class MainPanel(Panel):
 
         go = tk.Button(self.window,
                        font=font.Font(size=30),
-                       text="Fit!",
+                       text="Run!",
                        command=lambda: (
                            self.go()
                        ))
@@ -88,9 +88,12 @@ class MainPanel(Panel):
         print('matlab engine started')
         eng.addpath(r'C:\Users\nlamas\workspace\hall_routine\matlab_functions')
         run_params =  tuple(self.elem_to_run_param(name) for name in self.output_format)
+        print('parameters of the run: ', end='')
+        print(*run_params)
         eng.edicio_mesura(*run_params, nargout=0)
         eng.SSA_filter(nargout=0)
         eng.fourier(nargout=0)
+        eng.fourier_part(nargout=0)
         eng.quit()
 
     def elem_to_run_param(self, name):
@@ -104,11 +107,8 @@ class MainPanel(Panel):
         else:
             if name in ['sample_name', 'input_path', 'output_path']:
                 return val
-            elif name in ['dx', 'dy', 'ht', 'GV', 'amplecinta']:
+            elif name in ['dx', 'dy', 'ht', 'GV', 'amplecinta', 'm', 'n']:
                 return float(val)
-            elif name in ['m', 'n']:
-                return int(val)
-            
             else:
                 raise KeyError
 

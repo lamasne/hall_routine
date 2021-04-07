@@ -32,7 +32,7 @@ function Hall2B(mostra, allisatX, allisatY ,freqX, freqY, margelat)
     %
     % provat i funciona
 
-    global dxHall dyHall GV amplecinta inputPath outputPath
+    global dxHall dyHall GV amplecinta inputPath outputPath ht
 
     % % fraccio de l'ample de la cinta per cada costat en el que es pren tambe la
     % % mesura de B per fer el calcul

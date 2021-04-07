@@ -8,6 +8,8 @@
 
 function SSA_Filter()
 
+    close all
+
     global sampleName outputPath
 
     %Mesura que estudiarem:
@@ -63,7 +65,7 @@ function SSA_Filter()
 
 
     % guardem resultats
-    nom_guardar = strcat(strrep(nom,'.mat',''),'_filtred.mat');
+    nom_guardar = strcat(strrep(nom,'.mat',''),'_filtered.mat');
     % save ordinari
     save('-v7',nom_guardar, 'Vcru_copia');
 
