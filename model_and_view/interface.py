@@ -3,12 +3,14 @@ import tkinter.font as font
 import matlab.engine
 from model_and_view.defaults import *
 from model_and_view.view_elements import *
+from time import sleep
+
 
 
 class MainInterface:
     def __init__(self):
         self.param_labels = {"sample_name": 'Sample name', "input_path": 'Input path', "output_path": 'Output path', "dx": 'dx',
-                        "dy": 'dy', "ht": 'ht', "GV": 'GV', 'amplecinta': 'amplecinta', 'm': 'm', 'n': 'n'}
+                        "dy": 'dy', "ht": 'ht', "GV": 'GV', 'amplecinta': 'amplecinta', 'm': 'm', 'n': 'n', 'sample_thickness': 'Sample thick.'}
         self.main_window = tk.Tk()
         self.main_window.title("Hall routine")
         self.panels = []
@@ -57,8 +59,8 @@ class Panel:
 class MainPanel(Panel):
     def __init__(self, view, window):
         Panel.__init__(self, view, window)
-        self.bt_pos = ['title', 'sample_name', 'input_path', 'output_path', 'dx', 'dy', 'ht', 'GV', 'amplecinta', 'm', 'n', 'go']
-        self.output_format = ['sample_name', 'input_path', 'output_path', 'dx', 'dy', 'ht', 'GV', 'amplecinta', 'm', 'n']
+        self.bt_pos = ['title', 'sample_name', 'input_path', 'output_path', 'dx', 'dy', 'ht', 'GV', 'amplecinta', 'm', 'n', 'sample_thickness', 'go']
+        self.output_format = ['sample_name', 'input_path', 'output_path', 'dx', 'dy', 'ht', 'GV', 'amplecinta', 'm', 'n', 'sample_thickness']
 
         # Create content
         tk.Label(self.window, text="Parameters", font="Helvetica 16 bold italic").grid(column=0, row=self.bt_pos.index('title'))
@@ -72,6 +74,8 @@ class MainPanel(Panel):
         ButtonEntry(self, "amplecinta", str(amplecinta), self.bt_pos.index('amplecinta'))
         ButtonEntry(self, "m", str(m), self.bt_pos.index('m'))
         ButtonEntry(self, "n", str(n), self.bt_pos.index('n'))
+        ButtonEntry(self, "sample_thickness", str(sample_thickness), self.bt_pos.index('sample_thickness'))
+
 
         go = tk.Button(self.window,
                        font=font.Font(size=30),
@@ -82,18 +86,24 @@ class MainPanel(Panel):
         last_row, last_column = self.window.grid_size()
         go.grid(column=last_column, row=self.bt_pos.index('go'))
 
+    # Function to put in another file and take run_params as argument
     def go(self):
-        print('starting matlab engine')
-        eng = matlab.engine.start_matlab()
-        print('matlab engine started')
-        eng.addpath(r'C:\Users\nlamas\workspace\hall_routine\matlab_functions')
         run_params =  tuple(self.elem_to_run_param(name) for name in self.output_format)
-        print('parameters of the run: ', end='')
+        print('Parameters of the run: ', end='')
         print(*run_params)
+
+        print('Starting matlab engine')
+        eng = matlab.engine.start_matlab()
+        print('Matlab engine started')
+        eng.addpath(r'C:\Users\nlamas\workspace\hall_routine\matlab_functions')
         eng.edicio_mesura(*run_params, nargout=0)
         eng.SSA_filter(nargout=0)
         eng.fourier(nargout=0)
-        eng.fourier_part(nargout=0)
+
+        # To implement: in between fourier and fourier_part, show plot and wait for input of window
+
+        # eng.fourier_part(nargout=0)
+
         eng.quit()
 
     def elem_to_run_param(self, name):
@@ -107,7 +117,7 @@ class MainPanel(Panel):
         else:
             if name in ['sample_name', 'input_path', 'output_path']:
                 return val
-            elif name in ['dx', 'dy', 'ht', 'GV', 'amplecinta', 'm', 'n']:
+            elif name in ['dx', 'dy', 'ht', 'GV', 'amplecinta', 'm', 'n', 'sample_thickness']:
                 return float(val)
             else:
                 raise KeyError

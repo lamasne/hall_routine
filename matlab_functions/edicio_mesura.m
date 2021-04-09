@@ -1,4 +1,4 @@
-function edicio_mesura(sampleName_in, inputPath_in, outputPath_in, dxHall_in, dyHall_in, ht_in, GV_in, amplecinta_in, m_in, n_in)
+function edicio_mesura(sampleName_in, inputPath_in, outputPath_in, dxHall_in, dyHall_in, ht_in, GV_in, amplecinta_in, m_in, n_in, gruix_in)
     % CALCUL DE CORRENT CRITIC EN CINTES DE MATERIAL SUPERCONDUCTOR
     % A PARTIR DE MESURES DE CAMP MAGNETIC AMB SONDA HALL
     % PER LINEALITZACIO I INVERSIO DEL PROBLEMA DE BIOT-SAVART
@@ -16,8 +16,10 @@ function edicio_mesura(sampleName_in, inputPath_in, outputPath_in, dxHall_in, dy
     % 2016/4/6
     % en desenvolupament
 
-    global sampleName dxHall dyHall ht GV amplecinta inputPath outputPath m n
+    global sampleName dxHall dyHall ht GV amplecinta inputPath outputPath m n gruix
 
+    fprintf('Starting edificio_mesura')
+    
     % Parametres de la mesura (TOTES LES MESURES SI)
     sampleName = sampleName_in;
 
@@ -32,6 +34,10 @@ function edicio_mesura(sampleName_in, inputPath_in, outputPath_in, dxHall_in, dy
 
     m = m_in;
     n = n_in;
+    
+    % gruix de la mostra
+    gruix = gruix_in; % thickness of the sample
+
 
     % Nom de la mesura a estudiar (poden ser varis si s'han fet amb els mateixos parametres)
     mostra{1}=sampleName;
@@ -90,6 +96,8 @@ function edicio_mesura(sampleName_in, inputPath_in, outputPath_in, dxHall_in, dy
 
     Hall2B(mostra, allisatX, allisatY,freqX,freqY,margelat);
 
+    fprintf('End of edificio mesura')
+    
     % tambe es generen figures de talls de la mesura de la sonda, 
     % i del camp B_z convolucionat, 
     % per cada mostra i en format png 

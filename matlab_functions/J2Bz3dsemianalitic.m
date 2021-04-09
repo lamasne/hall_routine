@@ -30,6 +30,9 @@ Jyi=Jy*ones(1,10);
 wi=ones(size(x0))*w;
 
 
+startTime=clock;
+loadingBar = waitbar(0, 'Bz computation');
+
 for k=1:length(xb),
     r00=sqrt((xb(k)-x0i).*(xb(k)-x0i)+(yb(k)-y0i).*(yb(k)-y0i)+(zb(k)-z).*(zb(k)-z));
     r0f=sqrt((xb(k)-x0i).*(xb(k)-x0i)+(yb(k)-yfi).*(yb(k)-yfi)+(zb(k)-z).*(zb(k)-z));
@@ -50,6 +53,14 @@ for k=1:length(xb),
     Bdllista=Bdllista.*(zf-z0); % la integral ajustada al domini
     
     Bd(k)=sum(Bdllista); % la suma de les integrals de tots els elements dona el camp en el punt
+    
+    % Loading bar
+    if mod(k,100) == 0
+        timeSpan = (clock - startTime);
+        avgTime = timeSpan(6)/k;
+        percentageLoading = timeSpan(6)/(avgTime*length(xb));
+        waitbar(percentageLoading, loadingBar);
+    end
 end;
 
 Bd=1e-7*Bd; % multipliquem per la constant de permeabilitat magnetica del buid

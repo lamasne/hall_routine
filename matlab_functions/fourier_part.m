@@ -8,13 +8,21 @@
 % Ens quedarem amb la finestra (m0:mf,n0:nf) de M2
 
 
-function fourier_part()
+function fourier_part(M2, x, y, x2, y2, B2, dx, dy, cbarra, sigmac, temps2)
 
+    
+    global ht gruix sampleName outputPath
+    
+    m0=40 % rows
+    mf=180
+    n0=1 % columns 
+    nf=120
+    
+    fprintf('Window selected:\n m0=%d, mf=%d, no=%d, nf=%d', m0, mf, n0, nf)
+    fprintf('values in fourier part MUST BE CHANGED ACCORDING TO THE PLOT (delimitations)')
 
-    m0=20; % rows
-    mf=140;
-    n0=20; % columns 
-    nf=200;
+    'Starting fourier_part'
+
 
     % WHAT FOLLOWS IS AUTOMATIC
     M2=M2(m0:mf,n0:nf);
@@ -107,8 +115,11 @@ function fourier_part()
     % FI del calcul directe que d'entrada no s'executa
     temps3=clock;
 
+    fprintf('fourier_part computation finished')
+
+    
     % guarda resultats
-    resultats=['calcul_fourier_' nom '.mat'];
+    resultats=[outputPath '\calcul_fourier_' sampleName '.mat'];
     save(resultats,'M2','Jx2','Jy2','Jv2','B2','Bd2','xm2','ym2','xj2','yj2','xb2','yb2','gruix','ht','cbarra','sigmac','-v7');
     % M2=magnetization (filtered, cropped)
     % Jx2,Jy2=x and y components of the current
@@ -132,8 +143,8 @@ function fourier_part()
     ylabel('y [mm]','FontSize', 20);
     set(gca,'fontsize',14); set(gcf,'Color','white');
     zlabel('B_z [T]','FontSize', 20);
-    fitxerfig=['Bz_' nom '.png'];
-    textfig=['Bz_' nom '.fig'];
+    fitxerfig=[outputPath '\Bz_' sampleName '.png'];
+    textfig=[outputPath '\Bz_' sampleName '.fig'];
     print('-dpng',fitxerfig);
     saveas(gcf,textfig);
 
@@ -143,8 +154,8 @@ function fourier_part()
     ylabel('y [mm]','FontSize', 20);
     set(gca,'fontsize',14); set(gcf,'Color','white');
     zlabel('M [A/m]');
-    fitxerfig=['M_' nom '.png'];
-    textfig=['M_' nom '.fig'];
+    fitxerfig=[outputPath '\M_' sampleName '.png'];
+    textfig=[outputPath '\M_' sampleName '.fig'];
     print('-dpng',fitxerfig);
     saveas(gcf,textfig);
 
@@ -154,8 +165,8 @@ function fourier_part()
     ylabel('y [mm]','FontSize', 20);
     set(gca,'fontsize',14); set(gcf,'Color','white');
     zlabel('J_v [A/m^2]');
-    fitxerfig=['Jv_' nom '.png'];
-    textfig=['Jv_' nom '.fig'];
+    fitxerfig=[outputPath '\Jv_' sampleName '.png'];
+    textfig=[outputPath '\Jv_' sampleName '.fig'];
     print('-dpng',fitxerfig);
     saveas(gcf,textfig);
 
@@ -165,8 +176,8 @@ function fourier_part()
     xlabel('x [mm]','FontSize', 20);
     ylabel('y [mm]','FontSize', 20);
     set(gca,'fontsize',14); set(gcf,'Color','white');
-    fitxerfig=['contorndensitatJ_' nom '.png'];
-    textfig=['contorndensitatJ_' nom '.fig'];
+    fitxerfig=[outputPath '\contorndensitatJ_' sampleName '.png'];
+    textfig=[outputPath '\contorndensitatJ_' sampleName '.fig'];
     print('-dpng',fitxerfig);
     saveas(gcf,textfig);
 
@@ -175,8 +186,8 @@ function fourier_part()
     xlabel('x [mm]','FontSize', 20);
     ylabel('y [mm]','FontSize', 20);
     set(gca,'fontsize',14); set(gcf,'Color','white');
-    fitxerfig=['curl(M)_' nom '.png'];
-    textfig=['curl(M)_' nom '.fig'];
+    fitxerfig=[outputPath '\curl(M)_' sampleName '.png'];
+    textfig=[outputPath '\curl(M)_' sampleName '.fig'];
     print('-dpng',fitxerfig);
     saveas(gcf,textfig);
 
@@ -185,23 +196,18 @@ function fourier_part()
     hold on
     plot(xb2(:,floor(size(B2,2)/2)),Bd2(:,floor(size(B2,2)/2)),'r');
     hold off
-    fitxerfig=['tall_filamig_B_Bd_' nom '.png'];
-    textfig=['tall_filamig_B_Bd_' nom '.fig'];
+    fitxerfig=[outputPath '\tall_filamig_B_Bd_' sampleName '.png'];
+    textfig=[outputPath '\tall_filamig_B_Bd_' sampleName '.fig'];
     print('-dpng',fitxerfig);
     saveas(gcf,textfig);
 
     % empaqueta les figures i les esborra (nomes funciona en Linux?)
-    empaqueta=['zip figures_' nom '.zip *.png'];
+    empaqueta=['zip figures_' sampleName '.zip ' outputPath '\*.png'];
     system(empaqueta);
-    system('rm *.png');
+    system(['rm ' outputPath '\*.png']);
 
-    'Temps calcul inicial'
-    temps1-temps0
 
-    'Temps analisi estadistic'
-    temps2-temps1
-
-    'Temps recalcul de Bz'
+    fprintf('Temps recalcul de Bz')
     temps3-temps2
     %}
 

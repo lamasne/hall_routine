@@ -9,7 +9,7 @@
 
 function fourier()
 
-    global sampleName outputPath m n dxHall dyHall ht
+    global sampleName outputPath m n dxHall dyHall ht gruix
 
 
     temps0=clock;
@@ -24,12 +24,10 @@ function fourier()
     % malla de mesura de Bz te m files x n columnes
 
     % eix OX dona direccio de cada fila (o -col?), eix OY direccio de cada columna (o fila?). Passos en cada eix
-    'ERROR: dx and dy have been reversed to make it work (in fourier.m)!'
-    dx=dyHall; % separation of measurements in every row
+    'ERROR: dx and dy have been reversed to make it work (in fourier.m)! And we had to multiply by 20'
+    dx=20*dyHall; % separation of measurements in every row
     dy=dxHall; % 10e-4 separation between rows
     % alc,ada sobre la mostra a la que la sonda mesura Bz
-    % gruix de la mostra
-    gruix = 1.35e-6; % thickness of the sample
     % factor de calibracio V/T en la mesura
     calibracio=1;  % 75.2; conversion factor from Volts to Tesla
     % END OF SPECIFIC DATA FOR EACH MEASUREMENT
@@ -111,7 +109,17 @@ function fourier()
     sigmac=std(llista_c);
 
     temps2=clock;
+    
+    'Temps calcul inicial'
+    temps1-temps0
+
+    'Temps analisi estadistic'
+    temps2-temps1
+    
     mesh(M2);
+    
+    fourier_part(M2, x, y, x2, y2, B2, dx, dy, cbarra, sigmac, temps2)
+    
     % END OF STATIC CODE THAT IS NOT EDITED
 
     %{
