@@ -13,12 +13,12 @@ function fourier_part(M2, x, y, x2, y2, B2, dx, dy, cbarra, sigmac, temps2)
     
     global ht gruix sampleName outputPath
     
-    m0=40 % rows
-    mf=180
-    n0=1 % columns 
-    nf=120
+    m0=40; % rows
+    mf=180;
+    n0=1; % columns 
+    nf=120;
     
-    fprintf('Window selected:\n m0=%d, mf=%d, no=%d, nf=%d', m0, mf, n0, nf)
+    fprintf('Window selected:\n m0=%d, mf=%d, no=%d, nf=%d', m0, mf, n0, nf\n)
     fprintf('values in fourier part MUST BE CHANGED ACCORDING TO THE PLOT (delimitations)')
 
     'Starting fourier_part'
@@ -202,7 +202,7 @@ function fourier_part(M2, x, y, x2, y2, B2, dx, dy, cbarra, sigmac, temps2)
     saveas(gcf,textfig);
 
     % empaqueta les figures i les esborra (nomes funciona en Linux?)
-    empaqueta=['zip figures_' sampleName '.zip ' outputPath '\*.png'];
+    empaqueta=['zip ' outputPath '\figures_' sampleName '.zip ' outputPath '\*.png'];
     system(empaqueta);
     system(['rm ' outputPath '\*.png']);
 
