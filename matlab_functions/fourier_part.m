@@ -8,21 +8,24 @@
 % Ens quedarem amb la finestra (m0:mf,n0:nf) de M2
 
 
-function fourier_part(M2, x, y, x2, y2, B2, dx, dy, cbarra, sigmac, temps2)
+function fourier_part(m0, mf, n0, nf)
 
     
     global ht gruix sampleName outputPath
     
-    m0=40; % rows
-    mf=180;
-    n0=1; % columns 
-    nf=120;
+    % m0=40; % rows
+    % mf=180;
+    % n0=1; % columns 
+    % nf=120;
     
-    fprintf('Window selected:\n m0=%d, mf=%d, no=%d, nf=%d', m0, mf, n0, nf\n)
-    fprintf('values in fourier part MUST BE CHANGED ACCORDING TO THE PLOT (delimitations)')
-
     'Starting fourier_part'
 
+    fprintf('Window selected:\n m0=%d, mf=%d, no=%d, nf=%d\n', m0, mf, n0, nf)
+    fprintf('values in fourier part MUST BE CHANGED ACCORDING TO THE PLOT (delimitations)')
+
+
+    input = strcat(outputPath, '\', sampleName, '_fourier.mat');
+    load(input);
 
     % WHAT FOLLOWS IS AUTOMATIC
     M2=M2(m0:mf,n0:nf);
@@ -202,9 +205,9 @@ function fourier_part(M2, x, y, x2, y2, B2, dx, dy, cbarra, sigmac, temps2)
     saveas(gcf,textfig);
 
     % empaqueta les figures i les esborra (nomes funciona en Linux?)
-    empaqueta=['zip ' outputPath '\figures_' sampleName '.zip ' outputPath '\*.png'];
+    empaqueta=['zip Pictures_' sampleName '.zip ' outputPath '\*.png'];
     system(empaqueta);
-    system(['rm ' outputPath '\*.png']);
+    system(['del ' outputPath '\*.png']);
 
 
     fprintf('Temps recalcul de Bz')

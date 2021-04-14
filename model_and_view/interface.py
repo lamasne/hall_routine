@@ -96,13 +96,22 @@ class MainPanel(Panel):
         eng = matlab.engine.start_matlab()
         print('Matlab engine started')
         eng.addpath(r'C:\Users\nlamas\workspace\hall_routine\matlab_functions')
-        eng.edicio_mesura(*run_params, nargout=0)
+        eng.init_global(*run_params, nargout=0)
         eng.SSA_filter(nargout=0)
         eng.fourier(nargout=0)
 
-        # To implement: in between fourier and fourier_part, show plot and wait for input of window
+        print("Enter m0:")
+        m0 = float(input())
+        print("Enter mf:")
+        mf = float(input())
+        print("Enter n0:")
+        n0 = float(input())
+        print("Enter nf:")
+        nf = float(input())
 
-        # eng.fourier_part(nargout=0)
+        eng.fourier_part(m0, mf, n0, nf, nargout=0)
+
+        # To implement: in between fourier and fourier_part, show plot and wait for input of window
 
         eng.quit()
 

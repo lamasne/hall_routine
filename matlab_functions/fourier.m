@@ -15,10 +15,10 @@ function fourier()
     temps0=clock;
 
     % your file with filtered data on variable Vcru_copia
-    nom = strcat(outputPath, '\', sampleName, '_filtered');
+    input = strcat(outputPath, '\', sampleName, '_filtered');
 
 
-    load(nom);
+    load(input);
 
     % USER FILLS THIS DATA
     % malla de mesura de Bz te m files x n columnes
@@ -118,7 +118,8 @@ function fourier()
     
     mesh(M2);
     
-    fourier_part(M2, x, y, x2, y2, B2, dx, dy, cbarra, sigmac, temps2)
+    output = strcat(outputPath, '\', sampleName, '_fourier.mat');
+    save(output, 'M2', 'x', 'y', 'x2', 'y2', 'B2', 'dx', 'dy', 'cbarra', 'sigmac', 'temps2', '-v6');
     
     % END OF STATIC CODE THAT IS NOT EDITED
 

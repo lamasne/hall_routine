@@ -1,4 +1,4 @@
-function edicio_mesura(sampleName_in, inputPath_in, outputPath_in, dxHall_in, dyHall_in, ht_in, GV_in, amplecinta_in, m_in, n_in, gruix_in)
+function init_global(sampleName_in, inputPath_in, outputPath_in, dxHall_in, dyHall_in, ht_in, GV_in, amplecinta_in, m_in, n_in, gruix_in)
     % CALCUL DE CORRENT CRITIC EN CINTES DE MATERIAL SUPERCONDUCTOR
     % A PARTIR DE MESURES DE CAMP MAGNETIC AMB SONDA HALL
     % PER LINEALITZACIO I INVERSIO DEL PROBLEMA DE BIOT-SAVART
@@ -18,7 +18,7 @@ function edicio_mesura(sampleName_in, inputPath_in, outputPath_in, dxHall_in, dy
 
     global sampleName dxHall dyHall ht GV amplecinta inputPath outputPath m n gruix
 
-    fprintf('Starting edificio_mesura')
+    fprintf('Starting init_global\n')
     
     % Parametres de la mesura (TOTES LES MESURES SI)
     sampleName = sampleName_in;
@@ -42,17 +42,6 @@ function edicio_mesura(sampleName_in, inputPath_in, outputPath_in, dxHall_in, dy
     % Nom de la mesura a estudiar (poden ser varis si s'han fet amb els mateixos parametres)
     mostra{1}=sampleName;
 
-
-    % % descomentar si es volen processar varies mostres alhora
-    % mostra{2}='Amp3_135A_2011_5_24_11_53';
-    % mostra{3}='Amp3_135Aavall_2011_5_24_15_42';
-    % mostra{4}='Amp3_170A_2011_5_24_12_52';
-    % mostra{5}='Amp3_170Aavall_2011_5_24_14_42';
-    % mostra{6}='Amp3_50A_2011_5_24_10_53';
-    % mostra{7}='Amp3_50Aavall_2011_5_24_17_35';
-
-
-    
     %-------------------------------------------------------
 
     % GV Calibra�ao de 20 de junho de 2019:
@@ -96,7 +85,7 @@ function edicio_mesura(sampleName_in, inputPath_in, outputPath_in, dxHall_in, dy
 
     Hall2B(mostra, allisatX, allisatY,freqX,freqY,margelat);
 
-    fprintf('End of edificio mesura')
+    fprintf('End of edificio mesura\n')
     
     % tambe es generen figures de talls de la mesura de la sonda, 
     % i del camp B_z convolucionat, 
