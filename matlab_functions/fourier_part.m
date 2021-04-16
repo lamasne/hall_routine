@@ -21,8 +21,6 @@ function fourier_part(m0, mf, n0, nf)
     'Starting fourier_part'
 
     fprintf('Window selected:\n m0=%d, mf=%d, no=%d, nf=%d\n', m0, mf, n0, nf)
-    fprintf('values in fourier part MUST BE CHANGED ACCORDING TO THE PLOT (delimitations)')
-
 
     input = strcat(outputPath, '\', sampleName, '_fourier.mat');
     load(input);
@@ -205,9 +203,9 @@ function fourier_part(m0, mf, n0, nf)
     saveas(gcf,textfig);
 
     % empaqueta les figures i les esborra (nomes funciona en Linux?)
-    empaqueta=['zip Pictures_' sampleName '.zip ' outputPath '\*.png'];
-    system(empaqueta);
-    system(['del ' outputPath '\*.png']);
+    % empaqueta=['zip Pictures_' sampleName '.zip ' outputPath '\*.png'];
+    % system(empaqueta);
+    % system(['del ' outputPath '\*.png']);
 
 
     fprintf('Temps recalcul de Bz')

@@ -25,8 +25,8 @@ function fourier()
 
     % eix OX dona direccio de cada fila (o -col?), eix OY direccio de cada columna (o fila?). Passos en cada eix
     'ERROR: dx and dy have been reversed to make it work (in fourier.m)! And we had to multiply by 20'
-    dx=20*dyHall; % separation of measurements in every row
-    dy=dxHall; % 10e-4 separation between rows
+    dx=dxHall; % separation of measurements in every row
+    dy=dyHall; % 10e-4 separation between rows
     % alc,ada sobre la mostra a la que la sonda mesura Bz
     % factor de calibracio V/T en la mesura
     calibracio=1;  % 75.2; conversion factor from Volts to Tesla

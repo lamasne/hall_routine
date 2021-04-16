@@ -92,6 +92,17 @@ class MainPanel(Panel):
         print('Parameters of the run: ', end='')
         print(*run_params)
 
+        # Write parameters to a readme
+        tmp = self.elem_to_run_param('output_path')
+        if not os.path.exists(tmp):
+            os.makedirs(tmp)
+        readme_path = os.path.join(tmp, 'readme.txt')
+        f = open(readme_path, "w")
+        for elem in run_params:
+            f.write(str(elem) + '\n')
+        f.close()
+
+        # Matlab script
         print('Starting matlab engine')
         eng = matlab.engine.start_matlab()
         print('Matlab engine started')
@@ -110,8 +121,6 @@ class MainPanel(Panel):
         nf = float(input())
 
         eng.fourier_part(m0, mf, n0, nf, nargout=0)
-
-        # To implement: in between fourier and fourier_part, show plot and wait for input of window
 
         eng.quit()
 
