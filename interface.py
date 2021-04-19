@@ -8,5 +8,5 @@ class MainInterface:
         eng.hello_world(nargout=0)
         eng.quit()
         self.main_window = tk.Tk()
-        self.main_window.title("Welcome to Fitting app")
+        self.main_window.title("Hall measurement routine")
         self.main_window.mainloop()
