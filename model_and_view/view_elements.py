@@ -13,10 +13,21 @@ class InterfaceElement(ABC):
         self.row = row
         self.panel.elements[name] = self
 
-    def assign_var(self, name, panel):
-        self.val = self.entry.get()
-        print(name + ' set to ' + self.val)
-        panel.view.update()
+    def assign_var(self, value):
+        self.val = value
+        # Make sure the text of the entries represent their actual values 
+        try:
+            if (self.entry.get() != self.val):
+                self.entry.delete(0,tk.END)
+                self.entry.insert(0, self.val)
+        except AttributeError:
+            print("Tried to change an element from the interface that doesn't have any entry attribute")
+
+        print(self.name + ' set to ' + self.val)
+        self.panel.view.update()
+
+    def get_value(self):
+        return self.val
 
     @abstractmethod
     def destroy(self):
@@ -32,7 +43,7 @@ class ButtonEntry(InterfaceElement):
         column_span = math.ceil(len(default)/20)
 
         # Label
-        self.lb = tk.Label(root, text=self.panel.view.param_labels[name])
+        self.lb = tk.Label(root, text=self.panel.view.param_labels[self.name])
         self.lb.grid(column=c, row=self.row)
 
         # Entry
@@ -45,7 +56,7 @@ class ButtonEntry(InterfaceElement):
         self.entry.insert(0, default)
 
         # Confirm button
-        self.bt = tk.Button(root, text="Confirm", command=lambda: self.assign_var(name, self.panel))
+        self.bt = tk.Button(root, text="Confirm", command=lambda: self.assign_var(self.entry.get()))
         self.bt.grid(column=c+1+column_span, row=self.row)
 
     def destroy(self):
@@ -53,4 +64,3 @@ class ButtonEntry(InterfaceElement):
         self.lb.destroy()
         self.entry.destroy()
         self.bt.destroy()
-
