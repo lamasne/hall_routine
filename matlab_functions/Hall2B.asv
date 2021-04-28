@@ -1,4 +1,4 @@
-function Hall2B()
+function Hall2B(mostra)
     % Conversio de uV a Tesla: 
     % es llegeixen els fitxers .csv de la llista mostra,
     % es fa la recta de regressio de les 100 primeres
@@ -14,29 +14,28 @@ function Hall2B()
     % Nova versio: guarda llista de coordenades x,y de cada mesura
     % de Bz; el fitxer on guarda camp Bz es diu {mostra}.mat
     %
-    % ConversÃ£o de uV para Tesla:
-    % sÃ£o lidos .csv arquivos da lista mostra,
-    % Ã© feita a linha de regressao das primeiras 100 e Ãºltimas 100 medidas de cada 
-    % linha; Esta linha reta Ã© o nÃ­vel zero e Ã© de descanso; Uma vez que a
-    % mediÃ§Ã£o estÃ¡ centrada em torno do nÃ­vel zero, o fator Ã© aplicado
-    % de conversÃ£o de uV para Tesla, sÃ£o maquiagem opcional (primeiro ao longo 
+    % Conversão de uV para Tesla:
+    % são lidos .csv arquivos da lista mostra,
+    % é feita a linha de regressao das primeiras 100 e últimas 100 medidas de cada 
+    % linha; Esta linha reta é o nível zero e é de descanso; Uma vez que a
+    % medição está centrada em torno do nível zero, o fator é aplicado
+    % de conversão de uV para Tesla, são maquiagem opcional (primeiro ao longo 
     % de cada linha, depois digite de arquivos)
     % eu escrevo dados para cada amostra em um arquivo .mat (Matlab bin v6,
-    % legÃ­vel de Matlab e Octave)
+    % legível de Matlab e Octave)
     %
-    % Nova versÃ£o: salve a lista de coordenadas x e de cada medida
-    % de Bz; O arquivo onde o campo Bz Ã© armazenado diz {sample} .mat
+    % Nova versão: salve a lista de coordenadas x e de cada medida
+    % de Bz; O arquivo onde o campo Bz é armazenado diz {sample} .mat
 
     % Jaume Amoros, UPC, Barcelona
     % 2016/4/6
     %
     % provat i funciona
 
-    load('global_params.mat', samplename, dxHall, dyHall, GV, amplecinta, inputPath, outputPath, ht);
     
     % Parametres d'allisat i frequencia
     % allisatY,allisatX val mes que siguin senars (valor 1 = no allisament)
-    % allisatY, allisatX mais que impar (valor 1 = sem cheiro)
+    % allisatY, allisatX ? mais que impar (valor 1 = sem cheiro)
     % reemplac,ar cada mesura pel promig de les allisatY mesures centrades en ella en la fila
     % replace each measure with the average straight lines centered on it
     allisatY=1; 
@@ -49,18 +48,18 @@ function Hall2B()
     % Aproveite uma de cada medida de freqY em cada linha
     freqY=1; 
      % si se li dona valor no nul retalla la mesura, deixant l'amplada de la mostra mes la fraccio indicada d'amplada per cada costat
-     % se vocï¿½ der um valor diferente de zero, corte a medida, deixando a largura da amostra mais a fraï¿½ï¿½o de largura indicada para cada lado
+     % se voc? der um valor diferente de zero, corte a medida, deixando a largura da amostra mais a fra??o de largura indicada para cada lado
     margelat=0;
     % margelat=1/2; % retalla la mesura a la seccio central amb amplada la de
     % la cinta, mes el 50% d'amplada per cada costat
     
     
+    global dxHall dyHall GV amplecinta inputPath outputPath ht
+
     % % fraccio de l'ample de la cinta per cada costat en el que es pren tambe la
     % % mesura de B per fer el calcul
     % margelatB=1/4; 
 
-    % Nom de la mesura a estudiar (poden ser varis si s'han fet amb els mateixos parametres)
-    mostra{1}=sampleName;
     nm=length(mostra);
 
     for k=1:nm,

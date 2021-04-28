@@ -10,9 +10,8 @@
 
 function fourier_part(m0, mf, n0, nf)
 
-    
-    global ht gruix sampleName outputPath
-    
+    load('global_params.mat', samplename, outputPath, ht, gruix);
+  
     % m0=40; % rows
     % mf=180;
     % n0=1; % columns 
