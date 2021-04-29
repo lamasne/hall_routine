@@ -32,7 +32,9 @@ function Hall2B()
     %
     % provat i funciona
 
-    load('global_params.mat', samplename, dxHall, dyHall, GV, amplecinta, inputPath, outputPath, ht);
+    fprintf('Starting Hall2B\n')
+
+    load('global_params.mat', 'sampleName', 'dxHall', 'dyHall', 'GV', 'amplecinta', 'inputPath', 'outputPath', 'ht');
     
     % Parametres d'allisat i frequencia
     % allisatY,allisatX val mes que siguin senars (valor 1 = no allisament)
@@ -114,6 +116,7 @@ function Hall2B()
         else
             Btot=BllisYX(1:freqX:end,round(colsB/2-(0.5+margelatB)*amplecinta/dyHall):freqY:round(colsB/2+(0.5+margelatB)*amplecinta/dyHall));
         end;
+
         dx=freqX*dxHall;
         dy=freqY*dyHall;
         xb1=linspace(0,dx*(size(Btot,1)-1),size(Btot,1));
@@ -135,5 +138,8 @@ function Hall2B()
         title('Tall longitudinal de B_z a mitja cinta');
         print('-dpng',[outputPath '\tall_longitudinal_central_Bz_' mostra{k} '.png']);
         clear A BllisY BllisYX Btot
+        
+        fprintf('End of Hall2B\n')
+
 end;
 

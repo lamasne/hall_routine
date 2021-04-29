@@ -112,6 +112,7 @@ class MainPanel(Panel):
         print('Matlab engine started')
         eng.addpath(r'C:\Users\nlamas\workspace\hall_routine\matlab_functions')
         eng.init_global(*run_params, nargout=0)
+        eng.Hall2B(nargout=0)
         eng.SSA_filter(nargout=0)
         eng.fourier(nargout=0)
 

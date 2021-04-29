@@ -10,12 +10,10 @@
 
 function fourier_part(m0, mf, n0, nf)
 
-    load('global_params.mat', samplename, outputPath, ht, gruix);
-
-    'Starting fourier_part'
-
+    fprintf('Starting fourier_part\n')
     fprintf('Window selected:\n m0=%d, mf=%d, no=%d, nf=%d\n', m0, mf, n0, nf)
 
+    load('global_params.mat', 'sampleName', 'outputPath', 'ht', 'gruix', 'dxHall', 'dyHall');
     input = strcat(outputPath, '\', sampleName, '_fourier.mat');
     load(input);
 
@@ -206,5 +204,7 @@ function fourier_part(m0, mf, n0, nf)
     temps3-temps2
     %}
 
+    fprintf('End of fourier_part\n')
 
+    
 end

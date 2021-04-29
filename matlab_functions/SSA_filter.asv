@@ -28,13 +28,18 @@ function SSA_Filter()
 
     %Necessitem una mesura m�s grollera. Volem tenir una mostra de fxc
     %Dimensions de la mesura grollera:
+    fprintf('Filtered \n')
+
     pas = 20; % agafarem una de cada pas mesures en cada fila
-    fprintf('Resolution divided by %d for computation purposes\n', pas)
-    save('global_params.mat', 'pas', '-append')
+    save(filename,variables,'-append')
+
 
     files = length(Vcru(:,1));
     Vcru_g=Vcru(:,ceil(pas/2):pas:end);
     columnes = size(Vcru_g,2);
+
+    size(Vcru_g)
+
 
     %%%%%%%%%%%%%%%%%%%%%%
     % Un cop tenim Vcru_g, anem a fer filtrat per redu�r el soroll i tamb�
