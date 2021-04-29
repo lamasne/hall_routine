@@ -60,7 +60,6 @@ function init_global(sampleName_in, inputPath_in, outputPath_in, dxHall_in, dyHa
     % Parametres d'allisat i frequencia
     % allisatY,allisatX val mes que siguin senars (valor 1 = no allisament)
     % allisatY, allisatX � mais que impar (valor 1 = sem cheiro)
-    % reemplac,ar cada mesura pel promig de les allisatY mesures centrades en ella en la fila
     % replace each measure with the average straight lines centered on it
     allisatY=1; 
     % despres de l'allisat anterior: reemplac,ar cada fila pel promig de les allisatX centrades en ella 

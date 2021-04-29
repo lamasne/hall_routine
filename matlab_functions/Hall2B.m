@@ -43,26 +43,27 @@ function Hall2B(mostra, allisatX, allisatY ,freqX, freqY, margelat)
     for k=1:nm,
         fitxer=[inputPath '\' mostra{k} '.csv'];
         A=col2matlab(fitxer);
+        fprintf('Size of input: %d x %d\n', size(A))
         desti=[outputPath '\' mostra{k} '.mat'];
         files=size(A,1);
         cols=size(A,2);
         colsB=cols-allisatY+1;
 
-        % dibuixa els talls de la mesura de la sonda Hall, sense cap filtratge
-        % draw the cuts of the measurement of the Hall probe, without any filtering
+        % draw the longitudinal cross section (x=mid-tape) of the probe voltage
         figure(1)
         plot(A(round(files/2),:),'r');
         xlabel('mesura');
         ylabel('V');
         title('Tall transvers de mesura sonda a mitja cinta');
         print('-dpng',[outputPath '\tall_transvers_central_uV_' mostra{k} '.png']);
+        
+        % draw the transversal cross section (y=mid-tape) of the probe voltage
         figure(2)
         plot(A(:,round(cols/2)),'r');
         xlabel('fila');
         ylabel('V');
         title('Tall longitudinal de mesura sonda a mitja cinta');
         print('-dpng',[outputPath '\tall_longitudinal_central_uV_' mostra{k} '.png']);
-
 
 
         % el nivell zero es determina fila a fila per compensar deriva de la

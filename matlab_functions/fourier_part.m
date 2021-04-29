@@ -13,11 +13,6 @@ function fourier_part(m0, mf, n0, nf)
     
     global ht gruix sampleName outputPath
     
-    % m0=40; % rows
-    % mf=180;
-    % n0=1; % columns 
-    % nf=120;
-    
     'Starting fourier_part'
 
     fprintf('Window selected:\n m0=%d, mf=%d, no=%d, nf=%d\n', m0, mf, n0, nf)
