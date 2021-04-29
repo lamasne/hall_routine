@@ -49,7 +49,7 @@ function Hall2B(mostra, allisatX, allisatY ,freqX, freqY, margelat)
         cols=size(A,2);
         colsB=cols-allisatY+1;
 
-        % draw the longitudinal cross section (x=mid-tape) of the probe voltage
+        % draw the transversal cross section (x=mid-tape) of the probe voltage
         figure(1)
         plot(A(round(files/2),:),'r');
         xlabel('mesura');
@@ -57,7 +57,7 @@ function Hall2B(mostra, allisatX, allisatY ,freqX, freqY, margelat)
         title('Tall transvers de mesura sonda a mitja cinta');
         print('-dpng',[outputPath '\tall_transvers_central_uV_' mostra{k} '.png']);
         
-        % draw the transversal cross section (y=mid-tape) of the probe voltage
+        % draw the longitudinal cross section (y=mid-tape) of the probe voltage
         figure(2)
         plot(A(:,round(cols/2)),'r');
         xlabel('fila');
@@ -97,15 +97,17 @@ function Hall2B(mostra, allisatX, allisatY ,freqX, freqY, margelat)
         yb1=linspace(0,dy*(size(Btot,2)-1),size(Btot,2));
         [xb2,yb2]=ndgrid(xb1,yb1);
         save(desti,'Btot','xb2','yb2','ht','-v6');
+        
         figure(3)
         plot(linspace(0,(size(Btot,2)-1)*dy,size(Btot,2)),Btot(round(size(Btot,1)/2),:));
-        xlabel('y(m)');
+        xlabel('y width (m)');
         ylabel('B_z(T)');
         title('Tall transvers de B_z a mitja cinta');
         print('-dpng',[outputPath '\tall_transvers_central_Bz_' mostra{k} '.png']);
+        
         figure(4)
         plot(linspace(0,(size(Btot,1)-1)*dx,size(Btot,1)),Btot(:,round(size(Btot,2)/2)));
-        xlabel('x(m)');
+        xlabel('x length (m)');
         ylabel('B_z(T)');
         title('Tall longitudinal de B_z a mitja cinta');
         print('-dpng',[outputPath '\tall_longitudinal_central_Bz_' mostra{k} '.png']);
