@@ -9,8 +9,7 @@
 
 function fourier()
 
-    global sampleName outputPath m n dxHall dyHall ht gruix
-
+    load('global_params.mat', samplename, outputPath, m, n, dxHall, dyHall, ht, gruix);
 
     temps0=clock;
 

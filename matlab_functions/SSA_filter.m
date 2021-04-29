@@ -10,12 +10,12 @@ function SSA_Filter()
 
     close all
 
-    global sampleName outputPath
+    load('global_params.mat', samplename, outputPath);
 
     %Mesura que estudiarem:
     nom = strcat(outputPath, '\', sampleName);
-
     load(nom)
+    
     Vcru= Btot;
     %Fixem els par�metres del SSA:
     Lf = 10; % Window length L per SSA per files 

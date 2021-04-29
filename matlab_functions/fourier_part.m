@@ -10,9 +10,8 @@
 
 function fourier_part(m0, mf, n0, nf)
 
-    
-    global ht gruix sampleName outputPath
-    
+    load('global_params.mat', samplename, outputPath, ht, gruix);
+
     'Starting fourier_part'
 
     fprintf('Window selected:\n m0=%d, mf=%d, no=%d, nf=%d\n', m0, mf, n0, nf)
