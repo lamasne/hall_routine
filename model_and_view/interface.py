@@ -110,7 +110,12 @@ class MainPanel(Panel):
         print('Starting matlab engine')
         eng = matlab.engine.start_matlab()
         print('Matlab engine started')
-        eng.addpath(r'C:\Users\nlamas\workspace\hall_routine\matlab_functions')
+        
+        # eng.addpath(r'C:\Users\nlamas\workspace\hall_routine\matlab_functions')
+        matlab_fct_path = os.path.join(os.path.abspath(os.getcwd()), 'matlab_functions')
+        print(matlab_fct_path)
+        eng.addpath(matlab_fct_path)
+
         eng.init_global(*run_params, nargout=0)
         eng.Hall2B(nargout=0)
         eng.SSA_filter(nargout=0)

@@ -6,7 +6,7 @@
 % Arnau Duran, UPC, Barcelona
 % 2017/3/19
 
-function SSA_Filter()
+function SSA_filter()
 
     close all
 

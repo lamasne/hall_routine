@@ -31,7 +31,6 @@ function init_global(sampleName, inputPath, outputPath, dxHall, dyHall, ht, GV, 
     % GV = 432.98; % for hall sensor feeded with 1 mA
     %-------------------------------------------------------
     save('-v7', 'global_params.mat', 'sampleName', 'dxHall', 'dyHall', 'ht', 'GV', 'amplecinta', 'inputPath', 'outputPath', 'm', 'n', 'gruix');
-    
     fprintf('End of init_global\n')
     
     % tambe es generen figures de talls de la mesura de la sonda, 

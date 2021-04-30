@@ -6,7 +6,7 @@ sample_name ='Theva_5cm_normal_tape_2021_4_16_17_18'
 # input_path = r'C:\Users\nlamas\Downloads'
 input_path = os.path.join(r'C:\Users\nlamas\Desktop\Actual_work\Hall_routine\inputs')
 # output_path = os.path.join(r'C:\Users\nlamas\Desktop\Actual_work\Hall_routine\outputs', sample_name)
-output_path = os.path.join(r'C:\Users\nlamas\Desktop\Actual_work\Hall_routine\outputs', sample_name + '_2')
+output_path = os.path.join(r'C:\Users\nlamas\Desktop\Actual_work\Hall_routine\outputs', sample_name)
 
 
 GV = 97. # factor de conversio: Gauss per Volt % 14.23 For Roxana  % 70.93 for Pedro

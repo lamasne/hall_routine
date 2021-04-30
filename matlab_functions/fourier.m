@@ -19,8 +19,8 @@ function fourier()
     m = fix(tmp.n / tmp.pas);
     n = tmp.m;
     
-    tmp.dyHall = dxHall;
-    tmp.dxHall = dyHall;
+    tmp.dyHall = dyHall;
+    tmp.dxHall = dxHall;
     tmp.m = m;
     tmp.n = n;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
