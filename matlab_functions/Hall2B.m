@@ -34,7 +34,7 @@ function Hall2B()
 
     fprintf('Starting Hall2B\n')
 
-    load('global_params.mat', 'sampleName', 'dxHall', 'dyHall', 'GV', 'amplecinta', 'inputPath', 'outputPath', 'ht');
+    load('global_params.mat', 'sampleName', 'deltaXHall', 'deltaYHall', 'GV', 'amplecinta', 'inputPath', 'outputPath', 'ht');
     
     % Parametres d'allisat i frequencia
     % allisatY,allisatX val mes que siguin senars (valor 1 = no allisament)
@@ -67,16 +67,26 @@ function Hall2B()
 
     for k=1:nm,
         fitxer=[inputPath '\' mostra{k} '.csv'];
-        A=col2matlab(fitxer);
-        fprintf('Size of input: %d x %d\n', size(A))
+        A=col2matlab(fitxer);        
+        % Get m, n from sample.csv
+        m=size(A,1);
+        n=size(A,2);        
+        fprintf('Size of input: m x n = %d x %d\n', m, n)
+
+        % Get dx and dy from m, n and delta_x delta_y
+        dxHall = deltaXHall / (m-1) * 10^(-3);
+        dyHall = deltaYHall / n * 10^(-3);
+        fprintf('dx = %d, dy = %d \n', dxHall, dyHall)
+
+        % Add m, n, dx and dy in global param
+        save('global_params.mat', 'm', 'n', 'dxHall', 'dyHall', '-append');
+
         desti=[outputPath '\' mostra{k} '.mat'];
-        files=size(A,1);
-        cols=size(A,2);
-        colsB=cols-allisatY+1;
+        colsB=n-allisatY+1;
 
         % draw the transversal cross section (x=mid-tape) of the probe voltage
         figure(1)
-        plot(A(round(files/2),:),'r');
+        plot(A(round(m/2),:),'r');
         xlabel('mesura');
         ylabel('V');
         title('Tall transvers de mesura sonda a mitja cinta');
@@ -84,7 +94,7 @@ function Hall2B()
         
         % draw the longitudinal cross section (y=mid-tape) of the probe voltage
         figure(2)
-        plot(A(:,round(cols/2)),'r');
+        plot(A(:,round(n/2)),'r');
         xlabel('fila');
         ylabel('V');
         title('Tall longitudinal de mesura sonda a mitja cinta');
@@ -93,9 +103,9 @@ function Hall2B()
 
         % el nivell zero es determina fila a fila per compensar deriva de la
         % sonda
-        for l=1:files,
-            r=polyfit([linspace(1,100,100),linspace(cols-99,cols,100)],[A(l,1:100),A(l,cols-99:cols)],1);
-            nzero=polyval(r,linspace(1,cols,cols));
+        for l=1:m,
+            r=polyfit([linspace(1,100,100),linspace(n-99,n,100)],[A(l,1:100),A(l,n-99:n)],1);
+            nzero=polyval(r,linspace(1,n,n));
             fila=A(l,:)-nzero;
             % allisat dins de cada fila:
             filaconv=conv(fila,ones(1,allisatY))/allisatY; 
@@ -117,8 +127,9 @@ function Hall2B()
             Btot=BllisYX(1:freqX:end,round(colsB/2-(0.5+margelatB)*amplecinta/dyHall):freqY:round(colsB/2+(0.5+margelatB)*amplecinta/dyHall));
         end;
 
-        dx=freqX*dxHall;
-        dy=freqY*dyHall;
+        dx=freqX*dxHall/m;
+        dy=freqY*dyHall/n;
+        
         xb1=linspace(0,dx*(size(Btot,1)-1),size(Btot,1));
         yb1=linspace(0,dy*(size(Btot,2)-1),size(Btot,2));
         [xb2,yb2]=ndgrid(xb1,yb1);

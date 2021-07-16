@@ -130,7 +130,9 @@ function fourier()
     temps2-temps1
     
     mesh(M2);
-    
+    xlabel('n');
+    ylabel('m');
+
     output = strcat(outputPath, '\', sampleName, '_fourier.mat');
     save(output, 'M2', 'x', 'y', 'x2', 'y2', 'B2', 'cbarra', 'sigmac', 'temps2', '-v6');
     
