@@ -28,7 +28,7 @@ function SSA_filter()
 
     %Necessitem una mesura m�s grollera. Volem tenir una mostra de fxc
     %Dimensions de la mesura grollera:
-    fprintf('Resolution divided by %d for computation purposes\n', pas)
+    fprintf('Resolution divided by %d for computation purposes --> %d x %d\n', pas, size(Vcru,1), size(Vcru,2)/pas)
     files = length(Vcru(:,1));
     Vcru_g=Vcru(:,ceil(pas/2):pas:end);
     columnes = size(Vcru_g,2);
