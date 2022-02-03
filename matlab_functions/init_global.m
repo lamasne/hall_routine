@@ -1,4 +1,4 @@
-function init_global(sampleName, inputPath, outputPath, dxHall, dyHall, ht, GV, amplecinta, m, n, gruix)
+function init_global(sampleName, inputPath, outputPath, deltaXHall, deltaYHall, amplecinta, gruix, pas, ht, GV)
 
     % CALCUL DE CORRENT CRITIC EN CINTES DE MATERIAL SUPERCONDUCTOR
     % A PARTIR DE MESURES DE CAMP MAGNETIC AMB SONDA HALL
@@ -30,10 +30,8 @@ function init_global(sampleName, inputPath, outputPath, dxHall, dyHall, ht, GV, 
     % GV = 273.63; % for hall sensor feeded with 2 mA
     % GV = 432.98; % for hall sensor feeded with 1 mA
     %-------------------------------------------------------
-
-    save('-v7', 'global_params.mat', 'sampleName', 'dxHall', 'dyHall', 'ht', 'GV', 'amplecinta', 'inputPath', 'outputPath', 'm', 'n', 'gruix');
-    
-    fprintf('End of edificio mesura\n')
+    save('-v7', 'global_params.mat', 'sampleName', 'deltaXHall', 'deltaYHall', 'ht', 'GV', 'amplecinta', 'inputPath', 'outputPath', 'gruix', 'pas');
+    fprintf('End of init_global\n')
     
     % tambe es generen figures de talls de la mesura de la sonda, 
     % i del camp B_z convolucionat, 

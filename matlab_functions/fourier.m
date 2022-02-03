@@ -9,8 +9,25 @@
 
 function fourier()
 
-    load('global_params.mat', samplename, outputPath, m, n, dxHall, dyHall, ht, gruix);
+    fprintf('Starting fourier\n')
 
+    % Inverting x and y (and m and n)   
+    tmp = matfile('global_params.mat','Writable',true);
+
+    dxHall = tmp.pas * tmp.dyHall;
+    dyHall = tmp.dxHall;
+    m = fix(tmp.n / tmp.pas);
+    n = tmp.m;
+    
+    tmp.dyHall = dyHall;
+    tmp.dxHall = dxHall;
+    tmp.m = m;
+    tmp.n = n;
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    load('global_params.mat', 'sampleName', 'outputPath', 'm', 'n', 'dxHall', 'dyHall', 'ht', 'gruix');
+
+    
     temps0=clock;
 
     % your file with filtered data on variable Vcru_copia
@@ -23,9 +40,6 @@ function fourier()
     % malla de mesura de Bz te m files x n columnes
 
     % eix OX dona direccio de cada fila (o -col?), eix OY direccio de cada columna (o fila?). Passos en cada eix
-    'ERROR: dx and dy have been reversed to make it work (in fourier.m)! And we had to multiply by 20'
-    dx=20*dyHall; % separation of measurements in every row
-    dy=dxHall; % 10e-4 separation between rows
     % alc,ada sobre la mostra a la que la sonda mesura Bz
     % factor de calibracio V/T en la mesura
     calibracio=1;  % 75.2; conversion factor from Volts to Tesla
@@ -41,18 +55,18 @@ function fourier()
 
 
     % Llista de punts de mesura de Bz, i simetrics, amb (0,0,ht)=mesura inicial
-    x=linspace(1-m,m-1,2*m-1)*dx;
-    y=linspace(1-n,n-1,2*n-1)*dy;
+    x=linspace(1-m,m-1,2*m-1)*dxHall;
+    y=linspace(1-n,n-1,2*n-1)*dyHall;
     [x2,y2]=ndgrid(x,y);
     xb=x2(:);
     yb=y2(:);
     zb=ht*ones(size(xb));
 
     % element central, per a calcular la G de Fourier
-    x0=-dx/2;
-    xf=dx/2;
-    y0=-dy/2;
-    yf=dy/2;
+    x0=-dxHall/2;
+    xf=dxHall/2;
+    y0=-dyHall/2;
+    yf=dyHall/2;
     z0=-gruix;
     zf=0;
 
@@ -64,8 +78,8 @@ function fourier()
 
     % calcul invers via transformades de Fourier discretes
     Bext=zeros(2*m,2*n);
-    size(Bext(m+1:2*m,n+1:2*n))
-    size(B2)
+    fprintf('size(Bext(m+1:2*m,n+1:2*n) = %d x %d\n', size(Bext(m+1:2*m,n+1:2*n)))
+    fprintf('size(B2) = %d x %d\n', size(B2))
     Bext(m+1:2*m,n+1:2*n)=B2;
 
     tB=fft2(Bext); 
@@ -116,9 +130,11 @@ function fourier()
     temps2-temps1
     
     mesh(M2);
-    
+    xlabel('n');
+    ylabel('m');
+
     output = strcat(outputPath, '\', sampleName, '_fourier.mat');
-    save(output, 'M2', 'x', 'y', 'x2', 'y2', 'B2', 'dx', 'dy', 'cbarra', 'sigmac', 'temps2', '-v6');
+    save(output, 'M2', 'x', 'y', 'x2', 'y2', 'B2', 'cbarra', 'sigmac', 'temps2', '-v6');
     
     % END OF STATIC CODE THAT IS NOT EDITED
 
@@ -146,7 +162,7 @@ function fourier()
     M2 = SSA_files(M2,20,4);
     M2 = SSA_columnes(M2,20,4);
 
-    % els elements per la M calculada son rectangles dx x dy centrats en cada
+    % els elements per la M calculada son rectangles dxHall x dyHall centrats en cada
     % mesura de Bz
     x=x(m:end);
     y=y(n:end);
@@ -171,8 +187,8 @@ function fourier()
     % calcul de J per diferencies centrades (4 punts) com a J=rot(M)
     diffMy=diff(M2.').';
     diffMx=diff(M2);
-    Jx2=(diffMy(1:end-1,:)+diffMy(2:end,:))/(2*dy);
-    Jy2=-(diffMx(:,1:end-1)+diffMx(:,2:end))/(2*dx);
+    Jx2=(diffMy(1:end-1,:)+diffMy(2:end,:))/(2*dyHall);
+    Jy2=-(diffMx(:,1:end-1)+diffMx(:,2:end))/(2*dxHall);
     Jv2=sqrt(Jx2.*Jx2+Jy2.*Jy2);
     xj02=xm2(1:end-1,1:end-1);
     xjf2=xm2(2:end,2:end);
@@ -186,8 +202,8 @@ function fourier()
     % md=size(B2,1);
     % nd=size(B2,2);
     % % calcul de la G requerida pel metode de Fourier
-    % xd=linspace(1-md,md-1,2*md-1)*dx;
-    % yd=linspace(1-nd,nd-1,2*nd-1)*dy;
+    % xd=linspace(1-md,md-1,2*md-1)*dxHall;
+    % yd=linspace(1-nd,nd-1,2*nd-1)*dyHall;
     % [xd2,yd2]=ndgrid(xd,yd);
     % xbd=xd2(:);
     % ybd=yd2(:);
@@ -309,4 +325,7 @@ function fourier()
     temps3-temps2
     %}
 
+    fprintf('End of fourier\n')
+
+    
 end
