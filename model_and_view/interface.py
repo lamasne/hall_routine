@@ -1,16 +1,18 @@
 import tkinter as tk
 import tkinter.font as font
 import matlab.engine
-from model_and_view.defaults import *
+import model_and_view.defaults as defaults_settings
 from model_and_view.view_elements import *
 from time import sleep
+import os
 
 
 
 class MainInterface:
     def __init__(self):
-        self.param_labels = {"sample_name": 'Sample name', "input_path": 'Input path', "output_path": 'Output path', "dx": 'dx',
-                        "dy": 'dy', "ht": 'ht', "GV": 'GV', 'amplecinta': 'amplecinta', 'm': 'm', 'n': 'n', 'sample_thickness': 'Sample thick.'}
+        self.param_labels = {"sample_name": 'Sample name', "input_path": 'Input path', "output_path": 'Output path', "delta_x": 'length [mm]',
+                        "delta_y": 'width [mm]', "ht": 'ht', "GV": 'GV', 'amplecinta': 'amplecinta [m]', 'sample_thickness': 'Sample thick. [m]',
+                        "pas": 'pas'}
         self.main_window = tk.Tk()
         self.main_window.title("Hall routine")
         self.panels = []
@@ -19,7 +21,9 @@ class MainInterface:
         self.main_window.mainloop()
 
     def update(self):
-        pass
+        # update output path according to sample name
+        self.main_panel.update_output_path()
+
         # Create or destroy sub-parameters entries depending on the configuration
         # self.main_panel.single_sub_param("fitting", 2, "init_params", init_params)
         # self.main_panel.single_sub_param("smooth", True, "smooth_params", smooth_params)
@@ -59,23 +63,21 @@ class Panel:
 class MainPanel(Panel):
     def __init__(self, view, window):
         Panel.__init__(self, view, window)
-        self.bt_pos = ['title', 'sample_name', 'input_path', 'output_path', 'dx', 'dy', 'ht', 'GV', 'amplecinta', 'm', 'n', 'sample_thickness', 'go']
-        self.output_format = ['sample_name', 'input_path', 'output_path', 'dx', 'dy', 'ht', 'GV', 'amplecinta', 'm', 'n', 'sample_thickness']
+        self.bt_pos = ['title', 'sample_name', 'input_path', 'output_path', 'delta_x', 'delta_y', 'amplecinta', 'sample_thickness', 'pas', 'ht', 'GV', 'go']
+        self.output_format = ['sample_name', 'input_path', 'output_path', 'delta_x', 'delta_y', 'amplecinta', 'sample_thickness', 'pas', 'ht', 'GV']
 
         # Create content
         tk.Label(self.window, text="Parameters", font="Helvetica 16 bold italic").grid(column=0, row=self.bt_pos.index('title'))
-        ButtonEntry(self, "sample_name", str(sample_name), self.bt_pos.index('sample_name'))
-        ButtonEntry(self, "input_path", str(input_path), self.bt_pos.index('input_path'))
-        ButtonEntry(self, "output_path", str(output_path), self.bt_pos.index('output_path'))
-        ButtonEntry(self, "dx", str(dx), self.bt_pos.index('dx'))
-        ButtonEntry(self, "dy", str(dy), self.bt_pos.index('dy'))
-        ButtonEntry(self, "ht", str(ht), self.bt_pos.index('ht'))
-        ButtonEntry(self, "GV", str(GV), self.bt_pos.index('GV'))
-        ButtonEntry(self, "amplecinta", str(amplecinta), self.bt_pos.index('amplecinta'))
-        ButtonEntry(self, "m", str(m), self.bt_pos.index('m'))
-        ButtonEntry(self, "n", str(n), self.bt_pos.index('n'))
-        ButtonEntry(self, "sample_thickness", str(sample_thickness), self.bt_pos.index('sample_thickness'))
-
+        ButtonEntry(self, "sample_name", str(defaults_settings.sample_name), self.bt_pos.index('sample_name'))
+        ButtonEntry(self, "input_path", str(defaults_settings.input_path), self.bt_pos.index('input_path'))
+        ButtonEntry(self, "output_path", str(defaults_settings.output_path), self.bt_pos.index('output_path'))
+        ButtonEntry(self, "delta_x", str(defaults_settings.delta_x), self.bt_pos.index('delta_x'))
+        ButtonEntry(self, "delta_y", str(defaults_settings.delta_y), self.bt_pos.index('delta_y'))
+        ButtonEntry(self, "amplecinta", str(defaults_settings.amplecinta), self.bt_pos.index('amplecinta'))
+        ButtonEntry(self, "sample_thickness", str(defaults_settings.sample_thickness), self.bt_pos.index('sample_thickness'))
+        ButtonEntry(self, "ht", str(defaults_settings.ht), self.bt_pos.index('ht'))
+        ButtonEntry(self, "pas", str(defaults_settings.pas), self.bt_pos.index('pas'))
+        ButtonEntry(self, "GV", str(defaults_settings.GV), self.bt_pos.index('GV'))
 
         go = tk.Button(self.window,
                        font=font.Font(size=30),
@@ -92,10 +94,27 @@ class MainPanel(Panel):
         print('Parameters of the run: ', end='')
         print(*run_params)
 
+        # Write parameters to a readme
+        tmp = self.elem_to_run_param('output_path')
+        if not os.path.exists(tmp):
+            os.makedirs(tmp)
+            print('Created directory: ' + str(tmp))
+        readme_path = os.path.join(tmp, 'readme.txt')
+        f = open(readme_path, "w")
+        for elem in run_params:
+            f.write(str(elem) + '\n')
+        f.close()
+
+        # Matlab script
         print('Starting matlab engine')
         eng = matlab.engine.start_matlab()
         print('Matlab engine started')
-        eng.addpath(r'C:\Users\nlamas\workspace\hall_routine\matlab_functions')
+        
+        # eng.addpath(r'C:\Users\nlamas\workspace\hall_routine\matlab_functions')
+        matlab_fct_path = os.path.join(os.path.abspath(os.getcwd()), 'matlab_functions')
+        print(matlab_fct_path)
+        eng.addpath(matlab_fct_path)
+
         eng.init_global(*run_params, nargout=0)
         eng.Hall2B(nargout=0)
         eng.SSA_filter(nargout=0)
@@ -112,8 +131,6 @@ class MainPanel(Panel):
 
         eng.fourier_part(m0, mf, n0, nf, nargout=0)
 
-        # To implement: in between fourier and fourier_part, show plot and wait for input of window
-
         eng.quit()
 
     def elem_to_run_param(self, name):
@@ -127,10 +144,32 @@ class MainPanel(Panel):
         else:
             if name in ['sample_name', 'input_path', 'output_path']:
                 return val
-            elif name in ['dx', 'dy', 'ht', 'GV', 'amplecinta', 'm', 'n', 'sample_thickness']:
+            elif name in ['delta_x', 'delta_y', 'ht', 'GV', 'amplecinta', 'sample_thickness', 'pas']:
                 return float(val)
             else:
                 raise KeyError
+
+    # If output path does not contain the sample name, it changes the last directory of the path by the sample name
+    def update_output_path(self):
+        sample_name = str(self.get_element('sample_name').get_value())
+        output_path = str(self.get_element('output_path').get_value())
+
+        if sample_name not in output_path:
+            separation_characters = ['//', '/', '\\']
+            splitted_output_path = []
+            i = -1
+            while len(splitted_output_path)<2:
+                i += 1
+                if i >= len(separation_characters):
+                    print('Output path could not be updated')
+                    return -1
+                splitted_output_path = output_path.split(separation_characters[i])
+            splitted_output_path[-1] = sample_name
+            self.get_element('output_path').assign_var(separation_characters[i].join(splitted_output_path))
+
+
+    def get_element(self, name):
+        return self.elements[name]
 
     # Create/destroy sub-parameter entry next to parent parameter
     def single_sub_param(self, parent_name, condition, child_name, default):

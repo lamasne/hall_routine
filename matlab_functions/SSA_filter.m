@@ -6,11 +6,13 @@
 % Arnau Duran, UPC, Barcelona
 % 2017/3/19
 
-function SSA_Filter()
+function SSA_filter()
 
     close all
 
-    load('global_params.mat', samplename, outputPath);
+    fprintf('Starting SSA_Filter\n')
+
+    load('global_params.mat', 'sampleName', 'outputPath', 'pas');
 
     %Mesura que estudiarem:
     nom = strcat(outputPath, '\', sampleName);
@@ -26,12 +28,10 @@ function SSA_Filter()
 
     %Necessitem una mesura m�s grollera. Volem tenir una mostra de fxc
     %Dimensions de la mesura grollera:
-    pas = 20; % agafarem una de cada pas mesures en cada fila
-
+    fprintf('Resolution divided by %d for computation purposes\n', pas)
     files = length(Vcru(:,1));
     Vcru_g=Vcru(:,ceil(pas/2):pas:end);
     columnes = size(Vcru_g,2);
-
 
     %%%%%%%%%%%%%%%%%%%%%%
     % Un cop tenim Vcru_g, anem a fer filtrat per redu�r el soroll i tamb�
@@ -68,6 +68,8 @@ function SSA_Filter()
     nom_guardar = strcat(strrep(nom,'.mat',''),'_filtered.mat');
     % save ordinari
     save('-v7',nom_guardar, 'Vcru_copia');
+
+    fprintf('End of SSA_Filter\n')
 
 
 end
