@@ -1,7 +1,7 @@
 import os 
 
 
-sample_name = 'SuperOx_5cm_2021_3_31_16_52'
+sample_name = 'Theva_normal_5cm_2_2021_12_1_16_53'
 
 #input_path = r'C:\Users\nlamas\Downloads'
 input_path = os.path.join(r'C:\Users\nlamas\Desktop\Actual_work\Hall_routine\inputs')
