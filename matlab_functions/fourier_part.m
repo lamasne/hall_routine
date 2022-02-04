@@ -10,19 +10,10 @@
 
 function fourier_part(m0, mf, n0, nf)
 
-    load('global_params.mat', samplename, outputPath, ht, gruix);
-  
-    % m0=40; % rows
-    % mf=180;
-    % n0=1; % columns 
-    % nf=120;
-    
-    'Starting fourier_part'
-
+    fprintf('Starting fourier_part\n')
     fprintf('Window selected:\n m0=%d, mf=%d, no=%d, nf=%d\n', m0, mf, n0, nf)
-    fprintf('values in fourier part MUST BE CHANGED ACCORDING TO THE PLOT (delimitations)')
 
-
+    load('global_params.mat', 'sampleName', 'outputPath', 'ht', 'gruix', 'dxHall', 'dyHall');
     input = strcat(outputPath, '\', sampleName, '_fourier.mat');
     load(input);
 
@@ -37,7 +28,7 @@ function fourier_part(m0, mf, n0, nf)
     M2 = SSA_files(M2,20,4);
     M2 = SSA_columnes(M2,20,4);
 
-    % els elements per la M calculada son rectangles dx x dy centrats en cada
+    % els elements per la M calculada son rectangles dxHall x dyHall centrats en cada
     % mesura de Bz
     x=x(m:end);
     y=y(n:end);
@@ -60,8 +51,8 @@ function fourier_part(m0, mf, n0, nf)
     % calcul de J per diferencies centrades (4 punts) com a J=rot(M)
     diffMy=diff(M2.').';
     diffMx=diff(M2);
-    Jx2=(diffMy(1:end-1,:)+diffMy(2:end,:))/(2*dy);
-    Jy2=-(diffMx(:,1:end-1)+diffMx(:,2:end))/(2*dx);
+    Jx2=(diffMy(1:end-1,:)+diffMy(2:end,:))/(2*dyHall);
+    Jy2=-(diffMx(:,1:end-1)+diffMx(:,2:end))/(2*dxHall);
     Jv2=sqrt(Jx2.*Jx2+Jy2.*Jy2);
     xj02=xm2(1:end-1,1:end-1);
     xjf2=xm2(2:end,2:end);
@@ -75,8 +66,8 @@ function fourier_part(m0, mf, n0, nf)
     % md=size(B2,1);
     % nd=size(B2,2);
     % % calcul de la G requerida pel metode de Fourier
-    % xd=linspace(1-md,md-1,2*md-1)*dx;
-    % yd=linspace(1-nd,nd-1,2*nd-1)*dy;
+    % xd=linspace(1-md,md-1,2*md-1)*dxHall;
+    % yd=linspace(1-nd,nd-1,2*nd-1)*dyHall;
     % [xd2,yd2]=ndgrid(xd,yd);
     % xbd=xd2(:);
     % ybd=yd2(:);
@@ -204,14 +195,16 @@ function fourier_part(m0, mf, n0, nf)
     saveas(gcf,textfig);
 
     % empaqueta les figures i les esborra (nomes funciona en Linux?)
-    empaqueta=['zip Pictures_' sampleName '.zip ' outputPath '\*.png'];
-    system(empaqueta);
-    system(['del ' outputPath '\*.png']);
+    % empaqueta=['zip Pictures_' sampleName '.zip ' outputPath '\*.png'];
+    % system(empaqueta);
+    % system(['del ' outputPath '\*.png']);
 
 
     fprintf('Temps recalcul de Bz')
     temps3-temps2
     %}
 
+    fprintf('End of fourier_part\n')
 
+    
 end
