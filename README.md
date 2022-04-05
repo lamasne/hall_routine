@@ -13,4 +13,4 @@ C:\Users\Lamas\AppData\Local\Programs\Python\Python37\python.exe setup.py instal
 2) from Pycharm settings Python interpreter: 
 inherit package from sites-package
 
-3) use matlab.engine
+3) use matlab.engine in the python code
