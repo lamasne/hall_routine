@@ -20,9 +20,10 @@ class MainInterface:
         self.update()
         self.main_window.mainloop()
 
-    def update(self):
+    def update(self, comment=""):
         # update output path according to sample name
-        self.main_panel.update_output_path()
+        if comment == "sample_name":
+            self.main_panel.update_output_path()
 
         # Create or destroy sub-parameters entries depending on the configuration
         # self.main_panel.single_sub_param("fitting", 2, "init_params", init_params)

@@ -30,8 +30,9 @@ Jyi=Jy*ones(1,10);
 wi=ones(size(x0))*w;
 
 
-startTime=clock;
-loadingBar = waitbar(0, 'Bz computation');
+tic; % start clock
+loadingBar = waitbar(0, 'Estimating time left', 'Name', 'Bz computation');
+% fprintf('length(xb): %d\n', length(xb)) - for debugging loadingBar
 
 for k=1:length(xb),
     r00=sqrt((xb(k)-x0i).*(xb(k)-x0i)+(yb(k)-y0i).*(yb(k)-y0i)+(zb(k)-z).*(zb(k)-z));
@@ -56,10 +57,10 @@ for k=1:length(xb),
     
     % Loading bar
     if mod(k,100) == 0
-        timeSpan = (clock - startTime);
-        avgTime = timeSpan(6)/k;
-        percentageLoading = timeSpan(6)/(avgTime*length(xb));
-        waitbar(percentageLoading, loadingBar);
+        timeSpan = toc;
+		avgTime = timeSpan/k;
+        percentageLoading = timeSpan/(avgTime*length(xb));
+        waitbar(percentageLoading, loadingBar, sprintf('Time left estimated: %d min', ceil(avgTime*(length(xb)-k)/60)));
     end
 end;
 
