@@ -24,7 +24,7 @@ class InterfaceElement(ABC):
             print("Tried to change an element from the interface that doesn't have any entry attribute")
 
         print(self.name + ' set to ' + self.val)
-        self.panel.view.update()
+        self.panel.view.update(self.name)
 
     def get_value(self):
         return self.val
