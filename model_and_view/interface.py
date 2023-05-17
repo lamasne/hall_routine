@@ -101,15 +101,14 @@ class MainPanel(Panel):
             print("The SHPM output is going to be smoothed")
             input_path = os.path.join(self.elements["input_path"].val, self.elements["sample_name"].val + ".csv")
 
-            new_file_name = "smoothed_" + self.elements["sample_name"].val + ".csv"
+            new_file_name = "smoothed_" + self.elements["sample_name"].val
             output_path = ('\\'.join(self.elements["output_path"].val.split('\\')[:-1]))
-            new_full_input_path = os.path.join(output_path, new_file_name)
+            new_full_input_path = os.path.join(output_path, new_file_name + ".csv")
 
             # lines_affected = 11
             smooth_SHPM_output(input_path, new_full_input_path)        
             self.elements["input_path"].val = output_path
-            self.elements["sample_name"].val = "smoothed_" + self.elements["sample_name"].val
-            print("The input file used is: " + str(self.elements["input_path"].val)  + str(self.elements["sample_name"].val))
+            self.elements["sample_name"].val = new_file_name
 
         run_params =  tuple(self.elem_to_run_param(name) for name in self.output_format)
         print('Parameters of the run: ', end='')
