@@ -5,14 +5,14 @@ import model_and_view.defaults as defaults_settings
 from model_and_view.view_elements import *
 from time import sleep
 import os
-
+from model_and_view.SHPM_filter import smooth_SHPM_output
 
 
 class MainInterface:
     def __init__(self):
         self.param_labels = {"sample_name": 'Sample name', "input_path": 'Input path', "output_path": 'Output path', "delta_x": 'length [mm]',
                         "delta_y": 'width [mm]', "ht": 'ht', "GV": 'GV', 'amplecinta': 'amplecinta [m]', 'sample_thickness': 'Sample thick. [m]',
-                        "pas": 'pas'}
+                        "pas": 'pas', "filter_bool": 'Filter SHPM output?'}
         self.main_window = tk.Tk()
         self.main_window.title("Hall routine")
         self.panels = []
@@ -64,7 +64,7 @@ class Panel:
 class MainPanel(Panel):
     def __init__(self, view, window):
         Panel.__init__(self, view, window)
-        self.bt_pos = ['title', 'sample_name', 'input_path', 'output_path', 'delta_x', 'delta_y', 'amplecinta', 'sample_thickness', 'pas', 'ht', 'GV', 'go']
+        self.bt_pos = ['title', 'sample_name', 'input_path', 'output_path', 'delta_x', 'delta_y', 'amplecinta', 'sample_thickness', 'pas', 'ht', 'GV', 'check', 'go']
         self.output_format = ['sample_name', 'input_path', 'output_path', 'delta_x', 'delta_y', 'amplecinta', 'sample_thickness', 'pas', 'ht', 'GV']
 
         # Create content
@@ -80,17 +80,37 @@ class MainPanel(Panel):
         ButtonEntry(self, "pas", str(defaults_settings.pas), self.bt_pos.index('pas'))
         ButtonEntry(self, "GV", str(defaults_settings.GV), self.bt_pos.index('GV'))
 
-        go = tk.Button(self.window,
+        last_row, last_column = self.window.grid_size()
+
+        Checkbox(self, "filter_bool", defaults_settings.filter_bool, row=self.bt_pos.index('go'), c=last_column-1, )
+
+        self.elements["go_btn"] = tk.Button(self.window,
                        font=font.Font(size=30),
                        text="Run!",
                        command=lambda: (
                            self.go()
                        ))
-        last_row, last_column = self.window.grid_size()
-        go.grid(column=last_column, row=self.bt_pos.index('go'))
+        self.elements["go_btn"].grid(column=last_column, row=self.bt_pos.index('go'))
 
     # Function to put in another file and take run_params as argument
     def go(self):
+        
+        # Smooth SHPM output
+        # print(self.elements["filter_bool"].val)
+        if self.elements["filter_bool"].val.get():
+            print("The SHPM output is going to be smoothed")
+            input_path = os.path.join(self.elements["input_path"].val, self.elements["sample_name"].val + ".csv")
+
+            new_file_name = "smoothed_" + self.elements["sample_name"].val + ".csv"
+            output_path = ('\\'.join(self.elements["output_path"].val.split('\\')[:-1]))
+            new_full_input_path = os.path.join(output_path, new_file_name)
+
+            # lines_affected = 11
+            smooth_SHPM_output(input_path, new_full_input_path)        
+            self.elements["input_path"].val = output_path
+            self.elements["sample_name"].val = "smoothed_" + self.elements["sample_name"].val
+            print("The input file used is: " + str(self.elements["input_path"].val)  + str(self.elements["sample_name"].val))
+
         run_params =  tuple(self.elem_to_run_param(name) for name in self.output_format)
         print('Parameters of the run: ', end='')
         print(*run_params)
@@ -173,40 +193,40 @@ class MainPanel(Panel):
         return self.elements[name]
 
     # Create/destroy sub-parameter entry next to parent parameter
-    def single_sub_param(self, parent_name, condition, child_name, default):
-        elements = self.elements
-        if type(default) != list: default = [default]
-        # if condition for sub-param to make sense and sub params not yet there --> create
-        if self.elem_to_run_param(parent_name) == condition and child_name not in elements:
-            parent_pos = elements[parent_name].bt.grid_info()
-            pos = parent_pos['row'], parent_pos['column'] + 1
-            ButtonEntry(self, child_name, ' '.join([str(elem) for elem in default]), *pos)
-        # if condition for sub-param does not make sense and it is shown --> destroy
-        elif self.elem_to_run_param(parent_name) != condition and child_name in elements:
-            self.destroy_elem(child_name)
+    # def single_sub_param(self, parent_name, condition, child_name, default):
+    #     elements = self.elements
+    #     if type(default) != list: default = [default]
+    #     # if condition for sub-param to make sense and sub params not yet there --> create
+    #     if self.elem_to_run_param(parent_name) == condition and child_name not in elements:
+    #         parent_pos = elements[parent_name].bt.grid_info()
+    #         pos = parent_pos['row'], parent_pos['column'] + 1
+    #         ButtonEntry(self, child_name, ' '.join([str(elem) for elem in default]), *pos)
+    #     # if condition for sub-param does not make sense and it is shown --> destroy
+    #     elif self.elem_to_run_param(parent_name) != condition and child_name in elements:
+    #         self.destroy_elem(child_name)
 
     # Create/destroy window for multiple sub-parameters
-    def multiple_sub_param(self, parent_name, condition, child_names, defaults, title):
-        for default in defaults:
-            if type(default) != list: default = [default]
+    # def multiple_sub_param(self, parent_name, condition, child_names, defaults, title):
+    #     for default in defaults:
+    #         if type(default) != list: default = [default]
 
-        # Check if sub_panel already exists
-        sub_panel = None
-        for panel in self.view.get_panels():
-            if panel.window.title() == title:
-                sub_panel = panel
+    #     # Check if sub_panel already exists
+    #     sub_panel = None
+    #     for panel in self.view.get_panels():
+    #         if panel.window.title() == title:
+    #             sub_panel = panel
 
-        # if condition for sub-params to make sense and not already shown, open window
-        if self.elem_to_run_param(parent_name) == condition and sub_panel is None:
-            sub_panel = self.view.create_panel(title)
-            for i in range(len(child_names)):
-                self.elements[child_names[i]] = ButtonEntry(sub_panel, child_names[i], defaults[i], i)
-            sub_panel.window.mainloop()
+    #     # if condition for sub-params to make sense and not already shown, open window
+    #     if self.elem_to_run_param(parent_name) == condition and sub_panel is None:
+    #         sub_panel = self.view.create_panel(title)
+    #         for i in range(len(child_names)):
+    #             self.elements[child_names[i]] = ButtonEntry(sub_panel, child_names[i], defaults[i], i)
+    #         sub_panel.window.mainloop()
 
-        # if condition for sub-params does not make sense and they are shown --> destroy
-        elif self.elem_to_run_param(parent_name) != condition and sub_panel is not None:
-            for child_name in child_names:
-                # destroy every elem from the panel
-                sub_panel.destroy_elem(child_name)
-            # destroy the window and remove from view's list of panel
-            self.view.remove_panel(sub_panel)
+    #     # if condition for sub-params does not make sense and they are shown --> destroy
+    #     elif self.elem_to_run_param(parent_name) != condition and sub_panel is not None:
+    #         for child_name in child_names:
+    #             # destroy every elem from the panel
+    #             sub_panel.destroy_elem(child_name)
+    #         # destroy the window and remove from view's list of panel
+    #         self.view.remove_panel(sub_panel)

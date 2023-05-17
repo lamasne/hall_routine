@@ -1,6 +1,3 @@
-import matlab
-print(matlab.__file__)
-
 from model_and_view.interface import MainInterface
 
 if __name__ == '__main__':
