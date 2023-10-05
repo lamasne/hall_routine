@@ -127,8 +127,8 @@ function Hall2B()
             Btot=BllisYX(1:freqX:end,round(colsB/2-(0.5+margelatB)*amplecinta/dyHall):freqY:round(colsB/2+(0.5+margelatB)*amplecinta/dyHall));
         end;
 
-        dx=freqX*dxHall/m;
-        dy=freqY*dyHall/n;
+        dx=freqX*dxHall;
+        dy=freqY*dyHall;
         
         xb1=linspace(0,dx*(size(Btot,1)-1),size(Btot,1));
         yb1=linspace(0,dy*(size(Btot,2)-1),size(Btot,2));

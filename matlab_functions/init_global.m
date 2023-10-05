@@ -36,4 +36,5 @@ function init_global(sampleName, inputPath, outputPath, deltaXHall, deltaYHall, 
     % tambe es generen figures de talls de la mesura de la sonda, 
     % i del camp B_z convolucionat, 
     % per cada mostra i en format png 
+
 end

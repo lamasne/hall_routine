@@ -129,7 +129,6 @@ function fourier_part(m0, mf, n0, nf)
 
 
     % dibuixa figures
-    figure(1)
     % figure('Visible','off')
     mesh(xb2*1e3,yb2*1e3,B2);
     xlabel('x [mm]','FontSize', 20);
@@ -153,7 +152,11 @@ function fourier_part(m0, mf, n0, nf)
     saveas(gcf,textfig);
 
     figure(3)
-    mesh(xj2*1e3,yj2*1e3,Jv2);
+    mesh(xj2*1e3,yj2*1e3,Jv2, FaceColor = 'flat');
+	colormap(jet(128));
+	shading(gca,'interp');
+	daspect([1 1 1e9]);
+	caxis([0,1.5e10]);
     xlabel('x [mm]','FontSize', 20);
     ylabel('y [mm]','FontSize', 20);
     set(gca,'fontsize',14); set(gcf,'Color','white');
