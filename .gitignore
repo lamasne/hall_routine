@@ -1,1 +1,13 @@
-model_and_view/__pycache__/
+# Ignore compiled files
+*.class
+*.pyc
+*.o
+*.out
+
+# ?
+**/.idea/workspace.xml 
+**/.idea/tasks.xml
+
+# Build Artifacts
+/build/
+/dist/

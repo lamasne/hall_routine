@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from scipy.signal import savgol_filter
 import matplotlib.pyplot as plt
@@ -56,17 +57,20 @@ def smooth_SHPM_output(input_path, output_path, lines_affected=None, dy=None, dx
     X, Y = np.meshgrid(X, Y)
     fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
     surf = ax.plot_surface(X, Y, m, cmap=cm.coolwarm)
+
+    # Maybe change with savefigs
     for line in range(0,lines_affected,lines_affected//5):
         plt.figure(line) 
         plt.plot(np.linspace(1, dx, dx), m[line,:], 'r--', np.linspace(1, dx, dx), mp[line,:], 'b--')
         plt.show()
 
     # Create new csv with filtered data
-    g = open(output_path, "w")
-    g.write('P\n')
-    for i in range(dy):
-        g.write('L\n')
-        for j in range(dx):
-            g.write("{:.6f}\n".format(mp[i,j]))
-    g.close()
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w") as g:
+        g.write('P\n')
+        for i in range(dy):
+            g.write('L\n')
+            for j in range(dx):
+                g.write("{:.6f}\n".format(mp[i,j]))
+        # g.close()
 

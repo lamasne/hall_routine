@@ -102,12 +102,14 @@ class MainPanel(Panel):
             input_path = os.path.join(self.elements["input_path"].val, self.elements["sample_name"].val + ".csv")
 
             new_file_name = "smoothed_" + self.elements["sample_name"].val
-            output_path = ('\\'.join(self.elements["output_path"].val.split('\\')[:-1]))
-            new_full_input_path = os.path.join(output_path, new_file_name + ".csv")
+            # output_path = ('\\'.join(self.elements["output_path"].val.split('\\')[:-1]))
+            # new_full_input_path = os.path.join(output_path, new_file_name + ".csv")
+            new_full_input_path = os.path.join(self.elements["output_path"].val, new_file_name + ".csv")
 
             # lines_affected = 11
             smooth_SHPM_output(input_path, new_full_input_path)        
-            self.elements["input_path"].val = output_path
+            # self.elements["input_path"].val = output_path
+            self.elements["input_path"].val = self.elements["output_path"].val
             self.elements["sample_name"].val = new_file_name
 
         run_params =  tuple(self.elem_to_run_param(name) for name in self.output_format)
@@ -115,15 +117,12 @@ class MainPanel(Panel):
         print(*run_params)
 
         # Write parameters to a readme
-        tmp = self.elem_to_run_param('output_path')
-        if not os.path.exists(tmp):
-            os.makedirs(tmp)
-            print('Created directory: ' + str(tmp))
-        readme_path = os.path.join(tmp, 'readme.txt')
-        f = open(readme_path, "w")
-        for elem in run_params:
-            f.write(str(elem) + '\n')
-        f.close()
+        output_path = self.elem_to_run_param('output_path')
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        print('Created directory: ' + str(output_path))
+        with open(os.path.join(output_path, 'readme.txt'), "w") as f:        
+            for elem in run_params:
+                f.write(str(elem) + '\n')
 
         # Matlab script
         print('Starting matlab engine')
