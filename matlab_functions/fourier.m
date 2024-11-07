@@ -1,4 +1,4 @@
-  % calcul de Biot-Savart invers en mesura stacknouL30_2polsnou_gap600_2016_5_4_10_25_
+% calcul de Biot-Savart invers en mesura stacknouL30_2polsnou_gap600_2016_5_4_10_25_
 % pel metode de Fourier, amb filtratge SSA de la mesura de B
 %
 % Jaume Amoros, Arnau Duran UPC, Barcelona

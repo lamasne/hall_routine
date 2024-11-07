@@ -4,6 +4,7 @@ Data processing post hall measurements
 Requires: 
 - Python 3.4 or higher versions
 - Matlab2015a (or higher versions if Python version is at least 3.7)
+- Statistics Toolbox Module from Matlab
 - VSCode (Python 3.4 not supported in PyCharm) 
 - Git Bash
 
@@ -21,13 +22,13 @@ How to use:
 2) Activate matlab use from python:
    - Open a command prompt as admin and enter:
      
-     "cd C:_matlabroot_\extern\engines\python" 
+     cd C:_matlabroot_\extern\engines\python
      
      (where _matlabroot_ is the path to matlab on your machine, e.g. "C:\Program Files\MATLAB\R2022a\extern\engines\python")
 
    - Then, enter: 
 
-     "_pythonroot_ setup.py install" 
+     _pythonroot_ setup.py install
      
      (where _pythonroot_ is the path to python on your machine, e.g. "C:\Users\Lamas\AppData\Local\Programs\Python\Python37\python.exe setup.py install")
 
@@ -42,5 +43,8 @@ Debugging:
 1) Check that you selected the right version of Python in your code editor
    - From Pycharm settings Python interpreter: inherit package from sites-package
    - From VS code, https://code.visualstudio.com/docs/python/python-tutorial
+
+Notes:
+- It runs faster if matlab is open on the side (because it does not need to launch it from scratch)
 
 Programmer note: to use matlab, use matlab.engine in the python code
