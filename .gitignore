@@ -1,13 +1,19 @@
-# Ignore compiled files
-*.class
-*.pyc
+# Pyhon byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*$py.class
 *.o
 *.out
-
-# ?
-**/.idea/workspace.xml 
-**/.idea/tasks.xml
 
 # Build Artifacts
 /build/
 /dist/
+
+
+
+
+# Others
+**/.idea/workspace.xml 
+**/.idea/tasks.xml
+
+
