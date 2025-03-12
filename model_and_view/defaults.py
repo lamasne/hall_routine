@@ -4,7 +4,7 @@ import os
 sample_name = "FF_PSFC_free-standing_delam_25mm_1_2023_11_13_16_28"
 
 # Path of the input file
-commonpath = os.path.join(r"H:\My Drive\PhD\EXPERIMENTS\Hall_routine")
+commonpath = os.path.join(r"G:\My Drive\PhD\EXPERIMENTS\Hall_routine")
 input_path = os.path.join(commonpath, r"inputs\2023")
 
 # Path of the output file

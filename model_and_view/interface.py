@@ -1,5 +1,6 @@
-import tkinter as tk
-import tkinter.font as font
+import customtkinter as ctk
+# import tkinter as tk
+# import tkinter.font as font
 import matlab.engine
 import model_and_view.defaults as defaults_settings
 from model_and_view.view_elements import *
@@ -7,6 +8,8 @@ from time import sleep
 import os
 from model_and_view.SHPM_filter import smooth_SHPM_output
 
+# ctk.set_appearance_mode("dark")  # Modes: system (default), light, dark
+ctk.set_default_color_theme("dark-blue")
 
 class MainInterface:
     def __init__(self):
@@ -23,7 +26,8 @@ class MainInterface:
             "pas": "Step in X",
             "filter_bool": "Filter SHPM output?",
         }
-        self.main_window = tk.Tk()
+        self.main_window = ctk.CTk()
+        # self.main_window = tk.Tk()
         self.main_window.title("SHPM interface")
         self.panels = []
         self.main_panel = MainPanel(self, self.main_window)
@@ -37,16 +41,12 @@ class MainInterface:
 
 
 # Import view only for notify (notify(view) should be replaced by notify() and the view should catch it)?
-class Panel:
+class MainPanel():
     def __init__(self, view, window):
         self.view = view
         self.elements = {}
         self.window = window
-
-
-class MainPanel(Panel):
-    def __init__(self, view, window):
-        Panel.__init__(self, view, window)
+        
         self.bt_pos = [
             "title",
             "sample_name",
@@ -76,9 +76,18 @@ class MainPanel(Panel):
         ]
 
         # Create content
-        tk.Label(self.window, text="Parameters", font="Helvetica 16 bold italic").grid(
-            column=0, row=self.bt_pos.index("title")
-        )
+        # tk.Label(self.window, text="Parameters", font="Helvetica 16 bold italic").grid(
+        #     column=0, row=self.bt_pos.index("title")
+        # )
+
+        # ctk.CTkLabel(self.window, text="Parameters", font=ctk.CTkFont(family="Helvetica", size=20, weight="bold", slant="italic")).grid(
+        #     column=0, row=self.bt_pos.index("title")
+        # )
+
+        # ctk.CTkLabel(self.window, text="Parameters", font=ctk.CTkFont(size=24, weight="bold")).grid(
+        #     column=0, row=self.bt_pos.index("title")
+        # )
+
         ButtonEntry(
             self,
             "sample_name",
@@ -125,24 +134,31 @@ class MainPanel(Panel):
         ButtonEntry(self, "pas", str(defaults_settings.pas), self.bt_pos.index("pas"))
         ButtonEntry(self, "GV", str(defaults_settings.GV), self.bt_pos.index("GV"))
 
-        _, last_column = self.window.grid_size()
-
+        # Switch widget
+        Switch(self, "mode_switch", "Dark mode", default=False, row=self.bt_pos.index("go")-1, col=0)
+        
+        # Run button + filter checkbox
         Checkbox(
             self,
             "filter_bool",
             defaults_settings.filter_bool,
-            row=self.bt_pos.index("go"),
-            c=last_column - 1,
+            row=self.bt_pos.index("go")-1,
+            col=3,
+            padx=10,
         )
 
-        self.elements["go_btn"] = tk.Button(
+        self.elements["go_btn"] = ctk.CTkButton(
             self.window,
-            font=font.Font(size=30),
+            font=("Helvetica", 30),
             text="Run!",
             command=lambda: (self.go()),
         )
-        self.elements["go_btn"].grid(column=last_column, row=self.bt_pos.index("go"))
+        self.elements["go_btn"].grid(column=4, row=self.bt_pos.index("go")-1)
 
+    # Function to toggle theme
+    def toggle_dark_mode(self):
+        ctk.set_appearance_mode("Dark") if self.elements["mode_switch"].val.get() else ctk.set_appearance_mode("Light")
+        
     # Function to put in another file and take run_params as argument
     def go(self):
 
