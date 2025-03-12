@@ -1,15 +1,10 @@
 import customtkinter as ctk
-# import tkinter as tk
-# import tkinter.font as font
 import matlab.engine
 import model_and_view.defaults as defaults_settings
 from model_and_view.view_elements import *
 from time import sleep
 import os
 from model_and_view.SHPM_filter import smooth_SHPM_output
-
-# ctk.set_appearance_mode("dark")  # Modes: system (default), light, dark
-ctk.set_default_color_theme("dark-blue")
 
 class MainInterface:
     def __init__(self):
@@ -27,7 +22,7 @@ class MainInterface:
             "filter_bool": "Filter SHPM output?",
         }
         self.main_window = ctk.CTk()
-        # self.main_window = tk.Tk()
+        ctk.set_default_color_theme("dark-blue")
         self.main_window.title("SHPM interface")
         self.panels = []
         self.main_panel = MainPanel(self, self.main_window)
