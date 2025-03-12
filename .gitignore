@@ -9,9 +9,6 @@ __pycache__/
 /build/
 /dist/
 
-
-
-
 # Others
 **/.idea/workspace.xml 
 **/.idea/tasks.xml
