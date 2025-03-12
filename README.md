@@ -13,8 +13,6 @@ This software streamlines superconducting material (type-II) analysis, enabling 
 - ✅ Generates high-quality plots of the **trapped field** and **current density distribution**  
 - ✅ Includes a **Graphical User Interface (GUI)** for ease of use  
 
-
-
 ## Example Outputs
 
 <img src="doc/images/outputs_SHPM.png" alt="Typical trapped field and critical current density distribution in a coated conductor" height="250">
