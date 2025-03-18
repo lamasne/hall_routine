@@ -1,6 +1,6 @@
 # Scanning Hall Probe Microscopy (SHPM): Data Processing Tool
 
-This software processes data from Scanning Hall Probe Microscopy (SHPM) measurements, primarily used for characterizing superconducting coated conductors. It was developed during my PhD in Physics at the Institute of Materials Science of Barcelona (ICMAB-CSIC).
+This software processes data from Scanning Hall Probe Microscopy (SHPM) measurements, primarily used for characterizing superconducting coated conductors. I developed it during my PhD in Physics at the Institute of Materials Science of Barcelona (ICMAB-CSIC).
 
 ## Objectives
 
