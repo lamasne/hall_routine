@@ -40,7 +40,7 @@ Ensure you have the following installed:
   ```bash
   git clone https://github.com/lamasne/hall_routine.git
   ```
-How to use:
+## How to use:
 
 ### 3) Download all Python packages and Set Up Matlab-Python Integration
 
