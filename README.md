@@ -8,10 +8,11 @@ This software streamlines superconducting material (type-II) analysis, enabling 
 
 ## Key Features
 
-- ✅ Computes the **current density distribution ($J_c$)** using the **Biot-Savart law**  
-- ✅ Processes SHPM data stored in **CSV format**  
-- ✅ Generates high-quality plots of the **trapped field** and **current density distribution**  
-- ✅ Includes a **Graphical User Interface (GUI)** for ease of use  
+- [x] **Computes** the **current density distribution ($J_c$)** using the **Biot-Savart law**  
+- [x] **Processes** SHPM data stored in **CSV format**  
+- [x] **Cleans** signal noise using a **Savitzky-Golay filter**  
+- [x] **Generates** high-quality plots of the **trapped field** and **current density distribution**  
+- [x] **Provides** a **Graphical User Interface (GUI)** for ease of use  
 
 ## Example Outputs
 
