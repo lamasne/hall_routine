@@ -27,7 +27,7 @@ This software streamlines superconducting material (type-II) analysis, enabling 
 ### 1) Prerequisites
 Ensure you have the following installed:
    - **Python 3.4+** (recommended: Python 3.7+)
-   - **MATLAB 2015a+** (must be compatible with Python version)
+   - **MATLAB 2015a+** (must be compatible with Python version (see `https://github.com/mathworks/matlab-engine-for-python`)
    - **MATLAB Statistics Toolbox**
    - **VSCode** (or another IDE)
    - **Git Bash** (for repository cloning)
@@ -40,53 +40,76 @@ Ensure you have the following installed:
   ```bash
   git clone https://github.com/lamasne/hall_routine.git
   ```
-## How to use:
+### 3) Setup your environment
+I recommend to work with a **virtual environment**. It ensures dependency isolation and eliminates the need to manually manage package versions. 
+Open a PowerShell terminal (e.g., from your IDE) and run:
+```bash
+python -m venv .venv
+```
+#### Activate the Virtual Environment
+- Select `.\.venv\Scripts\python.exe` as your **Python Interpreter** in your IDE (see [VSCode Python Setup](https://code.visualstudio.com/docs/python/python-tutorial)):
+- Activate the environment in Powershell (to set up your shell to use the environment’s Python executable and its site-packages by default.)
+```bash
+.\.venv\Scripts\Activate
+```
+If you encounter an error like `cannot be loaded because the execution of scripts is disabled on this system`, open PowerShell as Administrator and run:
+```bash
+Set-ExecutionPolicy Unrestricted -Force
+```
+Then, retry the activation command.
 
-### 3) Download all Python packages and Set Up Matlab-Python Integration
-
-To install all required Python packages, use the following command from within a virtual environment or any terminal:
+#### Install Required Python Packages
+If you're using `Python 3.12` and `MATLAB 2024b`, install all dependencies with:
 ```bash
 pip install -r requirements.txt
 ```
-If you encounter dependency issues, modify the `requirements.txt` file based on the error messages you receive and re-run the installation command. 
+Otherwise, install missing packages manually:
+```bash
+python -m pip install <package_name>
+```
+You can identify missing packages by running the application (see the relevant section) and read error messages or checking for `import <package_name>` statements highlighted in yellow in the code.
+The only tricky package is matlabengine which enables MATLAB functionality within Python and which version must be specified and tailored to your version of Python and Matlab. To install the MATLAB Engine API, you have two options:
 
-In particular, to enable MATLAB functionality within Python, the MATLAB Engine API must be installed. If the previous step fails for `matlabengine` (in which case the line `import matlab.engine` in `model_and_view/interface.py` would typically be highlighted in yellow), you have two options:
-
-#### Option 1: Install matlabengine via pip
-Install a compatible version of the MATLAB Engine API. For instance, for `Python3.12` and `Matlab2024b`, run:
+#### Option 1: Install matlabengine via `pip`
+Find the compatible version in the [MATLAB Engine GitHub repository](https://github.com/mathworks/matlab-engine-for-python). Then, install it:
+Find a compatible version of the MATLAB Engine API and install it with:
+```bash
+python -m pip install matlabengine==<version>
+```
+For instance, with `Python3.12` and `Matlab2024b`, use:
 ```bash
 python -m pip install matlabengine==24.2.1
 ```
 
-#### Option 2: Install from MATLAB’s built-in script
-To ensure compatibility, install directly from MATLAB’s engine directory:
-- Open a command prompt as administrator.
-- Navigate to the Matlab Python engine directory:
+#### Option 2: Install from MATLAB’s Built-in Script
+To ensure compatibility, install directly from MATLAB:
+- Open a command prompt as Administrator.
+- Navigate to the Matlab's Python engine directory:
 ```bash
-cd C:_matlabroot_\extern\engines\python
+cd C:<matlabroot>\extern\engines\python
 ```
-Replace `_matlabroot_` with the path to your Matlab installation (e.g., `C:\Program Files\MATLAB\R2022a)`.
-- Install the MATLAB Engine API for your chosen Python version:
+Replace `<matlabroot>` with the path to your Matlab installation (e.g., `C:\Program Files\MATLAB\R2022a)`.
+- Install the engine for your Python interpreter:
 ```bash
-_pythonroot_ setup.py install
+<pythonroot> setup.py install
    ```
-Replace `_pythonroot_` with the path to the Python interepreter of your choice, e.g. `C:\Users\User\AppData\Local\Programs\Python\Python37\python.exe setup.py install`)
+Replace `<pythonroot>` with the path to your Python Executable (e.g., `C:\hall_routine\.venv\Scripts\python.exe`).
 
-### 4) Run the Software
+## How to use:
+
+### 5) Run the Software
 - Open the **hall_routine** directory from VScode (or another IDE).
 - Click the Run button (play icon) to execute the script.
 - Input the SHPM run parameters in the interface and click on the bottom right button `Run!` to start computation.
 
-### 5) Set Default Paths
-
+### 6) Set Default Paths
 To avoid manually selecting directories each time, update `model_and_view/defaults.py` with your preferred input/output paths.
 
+<!--
 ## Common Issues & Fixes:
-
 ### ❌ Incorrect Python version?
 - **In PyCharm:** Go to Settings > Project Interpreter and select the correct version.
 - **In VSCode:** Set up the correct interpreter using the [VSCode Python Setup](https://code.visualstudio.com/docs/python/python-tutorial).
-
-### ✅ Speed Optimization:
+-->
+## ✅ Speed Optimization:
 - The program runs faster if MATLAB is already open before execution.
-
